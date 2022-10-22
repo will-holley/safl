@@ -1,4 +1,4 @@
-import { UIContext } from "./context";
+import { Context } from "./context";
 
 import { useEffect, useState } from "react";
 
@@ -9,12 +9,16 @@ import { csr } from "../../../utils/browser";
 import type { onNoteDown, onNoteUp } from "./../types";
 import { PressedKeys } from "./types";
 
+import { defaultProviderState } from "./context";
+
 const OP1Provider: React.FC<{
   children: React.ReactElement | Array<React.ReactElement>;
 }> = ({ children }) => {
   const [op1, setOP1] = useState<OP1>();
 
-  const [pressedKeys, setPressedKeys] = useState<PressedKeys>({});
+  const [pressedKeys, setPressedKeys] = useState<PressedKeys>(
+    defaultProviderState.keys
+  );
 
   const onNoteDown: onNoteDown = (note) => {
     setPressedKeys((prevState) => ({ ...prevState, [note.id]: true }));
@@ -37,9 +41,9 @@ const OP1Provider: React.FC<{
   }, [isClient, op1]);
 
   return (
-    <UIContext.Provider value={{ keys: pressedKeys }}>
+    <Context.Provider value={{ keys: pressedKeys }}>
       {children}
-    </UIContext.Provider>
+    </Context.Provider>
   );
 };
 

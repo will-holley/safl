@@ -1,7 +1,7 @@
 type PressedKeys = { [id: string]: boolean };
 
-interface UIState {
+interface State {
   keys: PressedKeys;
 }
 
-export type { UIState, PressedKeys };
+export type { State, PressedKeys };

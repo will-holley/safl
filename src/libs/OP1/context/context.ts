@@ -1,6 +1,15 @@
 import { createContext } from "react";
-import type { UIState } from "./types";
+import type { State } from "./types";
+import { SUPPORTED_NOTES } from "../constants";
 
-const defaultUIState = {};
-export const UIContext = createContext(defaultUIState as UIState);
-UIContext.displayName = "UIContext";
+// Set up default state
+export const defaultProviderState = {
+  keys: SUPPORTED_NOTES.reduce(
+    (memo, note) => ({ ...memo, [note]: false }),
+    {}
+  ),
+};
+
+// Export
+export const Context = createContext(defaultProviderState as State);
+Context.displayName = "OP1Context";
