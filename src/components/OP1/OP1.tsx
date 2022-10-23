@@ -1,14 +1,16 @@
 import OP1Provider from "./context/provider";
 
-import Case from "./Case";
+import Board from "./Board";
 import Keyboard from "./Keyboard";
+import ShiftButton from "./buttons/Shift";
 
 const OP1: React.FC<{}> = ({}) => {
   return (
     <OP1Provider>
-      <Case>
+      <Board>
+        <ShiftButton />
         <Keyboard />
-      </Case>
+      </Board>
     </OP1Provider>
   );
 };

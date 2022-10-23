@@ -3,39 +3,32 @@ import { createGlobalStyle } from "styled-components";
 export default createGlobalStyle`
 
   :root{
-    --color-gray: rgb(229, 229, 229);
-    --color-black: rgb(15, 14, 18);
-    --color-white: white;
-    --color-blue: rgb(0, 113, 187);
-    --color-green: rgb(3 193 75);
-    --color-orange: rgb(240, 90, 36);
-    // "OP-1" text
-    --color-dark-gray: gray;
+    // Layout & Space
 
-    --color-gray-cool: #d8dbe3;
+    --button-gap: 0; // How much space between buttons?
 
-    // Pulling dimensions from https://codepen.io/liva_raita/pen/zYxpLjJ
-    --dim-case-height: 452px;
-    --dim-case-length: 1256px;
+    --space-base-unit: 1rem; // 16px
+    --space-base-unit-2x: calc(var(--space-base-unit) * 2); // 32px
+    --space-base-unit-4x: calc(var(--space-base-unit) * 4); // 64px
+    --space-base-unit-6x: calc(var(--space-base-unit) * 6); // 96px
+    --space-base-unit-8x: calc(var(--space-base-unit) * 8); // 128px
 
-    --button-border-radius: 4px;
+    --space-primary-unit-sm: var(--space-base-unit-4x);
+    --space-primary-unit-md: var(--space-base-unit-6x);
+    --space-primary-unit-lg: var(--space-base-unit-8x);
 
-    --dim-unit-1: 64px;
-    --dim-unit-2: 98px;
-    --dim-unit-3: 132px;
+    // Color Palettes
 
-    --dim-sm-square-height: var(--dim-unit-1);
-    --dim-sm-square-width: var(--dim-unit-1);
+    // Teenage Engineering OP-1 Guide Monochrome
+    --cp-monochrome-light: #e5e5e5;
+    --cp-monochrome-dark: #4d4d4d;
+    --cp-monochrome-text: #b2b2b2;
 
-    --dim-lg-square-height: var(--dim-unit-3);
-    --dim-lg-square-width: var(--dim-unit-3);
+    // Teenage Engineering Website Colors
+    --cp-te-blue: rgb(0, 113, 187);
+    --cp-te-green: rgb(3 193 75);
+    --cp-te-orange: rgb(240, 90, 36);
 
-    --dim-key-white-height: var(--dim-unit-3);
-    --dim-key-white-width: var(--dim-unit-1);
-
-    --dim-key-black-height: var(--dim-sm-square-height);
-    --dim-key-black-short-width: var(--dim-sm-square-width);
-    --dim-key-black-long-width: var(--dim-unit-2);
   }
 
   html,
@@ -44,6 +37,8 @@ export default createGlobalStyle`
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
       Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+
+    background-color: var(--cp-monochrome-dark);
   }
 
   * {
