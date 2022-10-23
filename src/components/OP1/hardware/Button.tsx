@@ -7,6 +7,7 @@ const Container = styled.div<{
   column: number | null;
   row: number | null;
   alignRight: boolean;
+  disabled: boolean;
 }>`
   // Expand to fit cell as defined by parent grid.
   height: 100%;
@@ -34,6 +35,10 @@ const Container = styled.div<{
     display: flex;
     justify-content: flex-end;
   `}
+
+  opacity: ${({ disabled }) => (disabled ? 0.2 : 1)};
+
+  cursor: default;
 `;
 
 const OuterBorder = styled.div<{ pressed: boolean }>`
@@ -94,7 +99,6 @@ const Button: React.FC<{
   buttonId,
 }) => {
   const op1 = useOP1();
-
   const [pressed, setPressed] = useState<boolean>(false);
 
   // Set up a press listener
@@ -110,8 +114,19 @@ const Button: React.FC<{
     );
   }, [op1.enabled, op1.listen]);
 
+  // RENDER
+
+  // Some buttons may not provide Midi output, such as SHIFT and therefore are "disabled"
+  // and should indicate this visually.
+  const isDisabled = buttonId === -1;
+
   return (
-    <Container column={column} row={row} alignRight={alignRight}>
+    <Container
+      column={column}
+      row={row}
+      alignRight={alignRight}
+      disabled={isDisabled}
+    >
       <OuterBorder pressed={pressed}>
         <InnerBorder pressed={pressed}>{children}</InnerBorder>
       </OuterBorder>
