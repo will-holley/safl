@@ -2,7 +2,7 @@ import { Context } from "./context";
 
 import { useEffect, useState } from "react";
 
-import OP1 from "../../../libs/OP1/opt1";
+import OP1 from "../../../libs/OP1/op1";
 
 import { csr } from "../../../utils/browser";
 
