@@ -77,6 +77,8 @@ const InnerBorder = styled.div<{ pressed: boolean }>`
 
   color: ${({ pressed }) =>
     pressed ? "var(--color-btn-press-feedback)" : "inherit"};
+
+  position: relative;
 `;
 
 const Button: React.FC<{
