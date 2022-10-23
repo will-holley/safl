@@ -2,12 +2,16 @@ import { Context } from "./context";
 
 import { useEffect, useState } from "react";
 
-import OP1 from "../opt1";
+import OP1 from "../../../libs/OP1/opt1";
 
 import { csr } from "../../../utils/browser";
 
-import type { onNoteDown, onNoteUp } from "./../types";
-import { PressedKeys } from "./types";
+import type {
+  onNoteDown,
+  onNoteUp,
+  onOctaveShift,
+} from "../../../libs/OP1/types";
+import { KeyState } from "./types";
 
 import { defaultProviderState } from "./context";
 
@@ -16,16 +20,18 @@ const OP1Provider: React.FC<{
 }> = ({ children }) => {
   const [op1, setOP1] = useState<OP1>();
 
-  const [pressedKeys, setPressedKeys] = useState<PressedKeys>(
-    defaultProviderState.keys
-  );
+  const [keys, setKeys] = useState<KeyState>(defaultProviderState.keys);
 
   const onNoteDown: onNoteDown = (note) => {
-    setPressedKeys((prevState) => ({ ...prevState, [note.id]: true }));
+    setKeys((state) => ({ ...state, [note.number]: 1 }));
   };
+
   const onNoteUp: onNoteUp = (note) => {
-    setPressedKeys((prevState) => ({ ...prevState, [note.id]: false }));
+    setKeys((state) => ({ ...state, [note.number]: 0 }));
   };
+
+  // TODO:
+  const onOctaveShift: onOctaveShift = (direction) => {};
 
   /**
    * On initial client-side render.
@@ -33,18 +39,14 @@ const OP1Provider: React.FC<{
   const isClient = csr();
   useEffect(() => {
     async function setup() {
-      const _op1 = new OP1({ keys: { onNoteDown, onNoteUp } });
+      const _op1 = new OP1({ keys: { onNoteDown, onNoteUp, onOctaveShift } });
       await _op1.connect();
       setOP1(_op1);
     }
     if (isClient && !op1) setup();
   }, [isClient, op1]);
 
-  return (
-    <Context.Provider value={{ keys: pressedKeys }}>
-      {children}
-    </Context.Provider>
-  );
+  return <Context.Provider value={{ keys }}>{children}</Context.Provider>;
 };
 
 export default OP1Provider;

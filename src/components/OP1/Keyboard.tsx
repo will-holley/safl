@@ -17,44 +17,44 @@ const Keyboard: React.FC<{}> = ({}) => {
   return (
     <Layout>
       <KeyGroup column={1} row={2}>
-        <WhiteKey id="F1" />
-        <WhiteKey id="G1" />
-        <WhiteKey id="A1" />
-        <WhiteKey id="B1" />
+        <WhiteKey name="F" number={53} />
+        <WhiteKey name="G" number={55} />
+        <WhiteKey name="A" number={57} />
+        <WhiteKey name="B" number={59} />
       </KeyGroup>
       <KeyGroup column={1} row={1}>
-        <BlackKey id="F#1" />
-        <BlackKey id="G#1" width={BlackKeyWidth.Short} />
-        <BlackKey id="A#1" />
+        <BlackKey name="F#" number={54} />
+        <BlackKey name="G#" width={BlackKeyWidth.Short} number={56} />
+        <BlackKey name="A#" number={58} />
       </KeyGroup>
       <KeyGroup column={2} row={2}>
-        <WhiteKey id="C1" />
-        <WhiteKey id="D1" />
-        <WhiteKey id="E1" />
+        <WhiteKey name="C" number={60} />
+        <WhiteKey name="D" number={62} />
+        <WhiteKey name="E" number={64} />
       </KeyGroup>
       <KeyGroup column={2} row={1}>
-        <BlackKey id="C#1" />
-        <BlackKey id="D#1" />
+        <BlackKey name="C#" number={61} />
+        <BlackKey name="D#" number={63} />
       </KeyGroup>
       <KeyGroup column={3} row={2}>
-        <WhiteKey id="F2" />
-        <WhiteKey id="G2" />
-        <WhiteKey id="A2" />
-        <WhiteKey id="B2" />
+        <WhiteKey name="F" number={65} />
+        <WhiteKey name="G" number={67} />
+        <WhiteKey name="A" number={69} />
+        <WhiteKey name="B" number={71} />
       </KeyGroup>
       <KeyGroup column={3} row={1}>
-        <BlackKey id="F#2" />
-        <BlackKey id="G#2" width={BlackKeyWidth.Short} />
-        <BlackKey id="A#2" />
+        <BlackKey name="F#" number={66} />
+        <BlackKey name="G#" width={BlackKeyWidth.Short} number={68} />
+        <BlackKey name="A#" number={70} />
       </KeyGroup>
       <KeyGroup column={4} row={2}>
-        <WhiteKey id="C2" />
-        <WhiteKey id="D2" />
-        <WhiteKey id="E2" />
+        <WhiteKey name="C" number={72} />
+        <WhiteKey name="D" number={74} />
+        <WhiteKey name="E" number={76} />
       </KeyGroup>
       <KeyGroup column={4} row={1}>
-        <BlackKey id="C#2" />
-        <BlackKey id="D#2" />
+        <BlackKey name="C#" number={73} />
+        <BlackKey name="D#" number={75} />
       </KeyGroup>
     </Layout>
   );

@@ -1,4 +1,4 @@
-import OP1Provider from "../../libs/OP1/context/provider";
+import OP1Provider from "./context/provider";
 
 import Case from "./Case";
 import Keyboard from "./Keyboard";
