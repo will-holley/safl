@@ -24,10 +24,9 @@ export const Key: React.FC<{
   // Key alignment
   alignRight?: boolean;
 }> = ({ name, number, alignRight = false }) => {
-  const { keys } = useOP1();
   return (
     <>
-      <Button pressed={keys[number] == 1} alignRight={alignRight}>
+      <Button alignRight={alignRight} buttonId={number}>
         {name.includes("#") ? <Black>{name}</Black> : name}
       </Button>
     </>

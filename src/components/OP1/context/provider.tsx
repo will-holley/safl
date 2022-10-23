@@ -1,4 +1,5 @@
 import { Context } from "./context";
+import type { State } from "./types";
 
 import { useEffect, useState } from "react";
 
@@ -6,32 +7,10 @@ import OP1 from "../../../libs/OP1/op1";
 
 import { csr } from "../../../utils/browser";
 
-import type {
-  onNoteDown,
-  onNoteUp,
-  onOctaveShift,
-} from "../../../libs/OP1/types";
-import { KeyState } from "./types";
-
-import { defaultProviderState } from "./context";
-
 const OP1Provider: React.FC<{
   children: React.ReactElement | Array<React.ReactElement>;
 }> = ({ children }) => {
   const [op1, setOP1] = useState<OP1>();
-
-  const [keys, setKeys] = useState<KeyState>(defaultProviderState.keys);
-
-  const onNoteDown: onNoteDown = (note) => {
-    setKeys((state) => ({ ...state, [note.number]: 1 }));
-  };
-
-  const onNoteUp: onNoteUp = (note) => {
-    setKeys((state) => ({ ...state, [note.number]: 0 }));
-  };
-
-  // TODO:
-  const onOctaveShift: onOctaveShift = (direction) => {};
 
   /**
    * On initial client-side render.
@@ -39,14 +18,23 @@ const OP1Provider: React.FC<{
   const isClient = csr();
   useEffect(() => {
     async function setup() {
-      const _op1 = new OP1({ keys: { onNoteDown, onNoteUp, onOctaveShift } });
+      const _op1 = new OP1();
       await _op1.connect();
       setOP1(_op1);
     }
     if (isClient && !op1) setup();
   }, [isClient, op1]);
 
-  return <Context.Provider value={{ keys }}>{children}</Context.Provider>;
+  // STATE
+
+  const enabled = op1?.enabled || false;
+  const state = {
+    enabled,
+    listen: enabled ? (...args) => op1?.addPressListener(...args) : null,
+  } as State;
+
+  // RENDER
+  return <Context.Provider value={state}>{children}</Context.Provider>;
 };
 
 export default OP1Provider;

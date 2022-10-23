@@ -11,20 +11,20 @@ export enum OctaveShift {
 
 type onOctaveShift = (direction: OctaveShift) => void;
 
-type OP1APIConfig = {
-  keys: KeyboardAPIConfig;
-};
+type onButtonDepress = () => void;
+type onButtonRelease = () => void;
 
-type KeyboardAPIConfig = {
-  onNoteDown: onNoteDown;
-  onNoteUp: onNoteUp;
-  onOctaveShift: onOctaveShift;
-};
+type ButtonPressListener = (
+  buttonId: number,
+  onDepress: onButtonDepress,
+  onRelease: onButtonRelease
+) => void;
 
 export type {
   onNoteDown,
   onNoteUp,
   onOctaveShift,
-  KeyboardAPIConfig,
-  OP1APIConfig,
+  onButtonDepress,
+  onButtonRelease,
+  ButtonPressListener,
 };

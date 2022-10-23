@@ -1,19 +1,32 @@
 import Midi from "./apis/midi";
-import Keyboard from "./apis/keyboard";
-
-import type { OP1APIConfig } from "./types";
+import type { onButtonDepress, onButtonRelease } from "./types";
 
 export default class OP1 {
-  private _midi: Midi;
-  private _keyboard: Keyboard;
+  private _midi: Midi = new Midi();
 
-  constructor(config: OP1APIConfig) {
-    this._midi = new Midi();
-    this._keyboard = new Keyboard(config.keys);
+  get enabled() {
+    return this._midi.enabled;
   }
 
   async connect() {
-    const input = await this._midi.enable();
-    this._keyboard.listenForMidiEvents(input);
+    await this._midi.enable();
+  }
+
+  /**
+   * Listen for button press events.
+   */
+  addPressListener(
+    buttonId: number,
+    onDepress: onButtonDepress,
+    onRelease: onButtonRelease
+  ): void {
+    // If number is between 53-76, register Note On/Off.
+    const adder =
+      buttonId >= 53 && buttonId <= 76
+        ? this._midi._addNoteCallbacks
+        : // Otherwise, register control change.
+          this._midi._addControlChangeCallbacks;
+
+    adder.call(this._midi, buttonId, onDepress, onRelease);
   }
 }

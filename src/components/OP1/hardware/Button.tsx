@@ -1,5 +1,8 @@
 import styled from "styled-components";
 
+import { useEffect, useState } from "react";
+import useOP1 from "../context/useOP1";
+
 const Container = styled.div<{
   column: number | null;
   row: number | null;
@@ -78,18 +81,35 @@ const Button: React.FC<{
   column?: number;
   // Optional: Row within Board Grid
   row?: number;
-  // Is this button currently depressed?
-  pressed?: boolean;
   // Optional: Align content to the right of container; necessary to
   // properly align black keys.
   alignRight?: boolean;
+  // Midi button id
+  buttonId: number;
 }> = ({
   children,
   column = null,
   row = null,
-  pressed = false,
   alignRight = false,
+  buttonId,
 }) => {
+  const op1 = useOP1();
+
+  const [pressed, setPressed] = useState<boolean>(false);
+
+  // Set up a press listener
+  useEffect(() => {
+    // Wait for OP1
+    if (!op1.enabled) return;
+
+    //@ts-ignore
+    op1.listen(
+      buttonId,
+      () => setPressed(true),
+      () => setPressed(false)
+    );
+  }, [op1.enabled, op1.listen]);
+
   return (
     <Container column={column} row={row} alignRight={alignRight}>
       <OuterBorder pressed={pressed}>
