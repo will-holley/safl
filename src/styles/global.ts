@@ -28,6 +28,7 @@ export default createGlobalStyle`
     --cp-te-blue: rgb(35, 174, 255);
     --cp-te-green: rgb(23, 180, 83);
     --cp-te-orange: rgb(240, 90, 36);
+    --cp-te-white: white;
 
     // Colors
 

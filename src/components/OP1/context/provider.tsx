@@ -30,7 +30,12 @@ const OP1Provider: React.FC<{
   const enabled = op1?.enabled || false;
   const state = {
     enabled,
-    listen: enabled ? (...args) => op1?.addPressListener(...args) : null,
+    addPressListener: enabled
+      ? (...args) => op1?.addPressListener(...args)
+      : null,
+    addRotationListener: enabled
+      ? (...args) => op1?.addRotationListener(...args)
+      : null,
   } as State;
 
   // RENDER

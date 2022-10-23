@@ -109,12 +109,12 @@ const Button: React.FC<{
     if (!op1.enabled) return;
 
     //@ts-ignore
-    op1.listen(
+    op1.addPressListener(
       buttonId,
       () => setPressed(true),
       () => setPressed(false)
     );
-  }, [op1.enabled, op1.listen]);
+  }, [op1.enabled, op1.addPressListener]);
 
   // RENDER
 

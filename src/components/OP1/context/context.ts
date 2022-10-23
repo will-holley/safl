@@ -4,7 +4,8 @@ import type { State } from "./types";
 // Set up default state
 export const defaultProviderState = {
   enabled: false,
-  listen: null,
+  addPressListener: null,
+  addRotationListener: null,
 };
 
 // Export

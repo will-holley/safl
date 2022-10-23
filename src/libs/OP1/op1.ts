@@ -1,5 +1,9 @@
 import Midi from "./apis/midi";
-import type { onButtonDepress, onButtonRelease } from "./types";
+import type {
+  onButtonDepress,
+  onButtonRelease,
+  onEncoderRotation,
+} from "./types";
 
 export default class OP1 {
   private _midi: Midi = new Midi();
@@ -27,6 +31,16 @@ export default class OP1 {
         : // Otherwise, register control change.
           this._midi._addControlChangeCallbacks;
 
-    adder.call(this._midi, buttonId, onDepress, onRelease);
+    adder.call(this._midi, buttonId, { onDepress, onRelease });
+  }
+
+  /**
+   * Listen for encoder rotation events.
+   */
+  addRotationListener(controlId: number, onRotation: onEncoderRotation): void {
+    // Validate that control is an encoder.
+    if (controlId < 1 || controlId > 4) throw new Error();
+
+    this._midi._addControlChangeCallbacks(controlId, { onRotation });
   }
 }

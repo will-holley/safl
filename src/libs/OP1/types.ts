@@ -20,6 +20,16 @@ type ButtonPressListener = (
   onRelease: onButtonRelease
 ) => void;
 
+/**
+ * value: 0-127.  Will continuously return 0 or 127 after exceeding these values.
+ */
+type onEncoderRotation = (value: number) => void;
+
+type EncoderRotationListener = (
+  controlId: number,
+  onRotation: onEncoderRotation
+) => void;
+
 export type {
   onNoteDown,
   onNoteUp,
@@ -27,4 +37,6 @@ export type {
   onButtonDepress,
   onButtonRelease,
   ButtonPressListener,
+  onEncoderRotation,
+  EncoderRotationListener,
 };

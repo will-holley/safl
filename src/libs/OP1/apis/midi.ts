@@ -4,7 +4,11 @@ import type {
   NoteMessageEvent,
   ControlChangeMessageEvent,
 } from "webmidi";
-import type { onButtonDepress, onButtonRelease } from "./../types";
+import type {
+  onButtonDepress,
+  onButtonRelease,
+  onEncoderRotation,
+} from "./../types";
 
 type CallbackMap = {
   [buttonId: number]: Array<CallableFunction>;
@@ -19,6 +23,7 @@ export default class Midi {
   _handleNoteOffCallbacks: CallbackMap = {};
   _handleControlChangeOnCallbacks: CallbackMap = {};
   _handleControlChangeOffCallbacks: CallbackMap = {};
+  _handleControlRotationCallbacks: CallbackMap = {};
 
   get enabled() {
     return Boolean(this._input);
@@ -84,48 +89,86 @@ export default class Midi {
 
   _handleControlChange(event: ControlChangeMessageEvent): void {
     const number = event.controller.number;
+    const interactionValue = event.message.data[2];
 
-    // Depressed or released?
-    const action = event.message.data[2];
-
-    if (action === 127 && this._handleControlChangeOnCallbacks[number]) {
+    // Button Depress
+    if (
+      interactionValue === 127 &&
+      this._handleControlChangeOnCallbacks[number]
+    ) {
       this._handleControlChangeOnCallbacks[number].forEach((callback) =>
         callback()
       );
-    } else if (action === 0 && this._handleControlChangeOffCallbacks[number]) {
+
+      // Button Release
+    } else if (
+      interactionValue === 0 &&
+      this._handleControlChangeOffCallbacks[number]
+    ) {
       this._handleControlChangeOffCallbacks[number].forEach((callback) =>
         callback()
       );
-    } else throw new Error();
+    } else if (this._handleControlRotationCallbacks[number]) {
+      this._handleControlRotationCallbacks[number].forEach((callback) =>
+        callback(interactionValue)
+      );
+    }
   }
 
   _addNoteCallbacks(
     buttonId: number,
-    onDepress: onButtonDepress,
-    onRelease: onButtonRelease
+    callbacks: {
+      onDepress: onButtonDepress;
+      onRelease: onButtonRelease;
+    }
   ): void {
     // Initialize arrays if necessary
     if (!this._handleNoteOnCallbacks.hasOwnProperty(buttonId))
       this._handleNoteOnCallbacks[buttonId] = [];
     if (!this._handleNoteOffCallbacks.hasOwnProperty(buttonId))
       this._handleNoteOffCallbacks[buttonId] = [];
-    // Add callback
-    this._handleNoteOnCallbacks[buttonId].push(onDepress);
-    this._handleNoteOffCallbacks[buttonId].push(onRelease);
+    // Add callbacks
+    this._handleNoteOnCallbacks[buttonId].push(callbacks.onDepress);
+    this._handleNoteOffCallbacks[buttonId].push(callbacks.onRelease);
   }
 
   _addControlChangeCallbacks(
-    buttonId: number,
-    onDepress: onButtonDepress,
-    onRelease: onButtonRelease
+    controlId: number,
+    callbacks: {
+      onDepress?: onButtonDepress;
+      onRelease?: onButtonRelease;
+      onRotation?: onEncoderRotation;
+    }
   ): void {
     // Initialize arrays if necessary
-    if (!this._handleControlChangeOnCallbacks.hasOwnProperty(buttonId))
-      this._handleControlChangeOnCallbacks[buttonId] = [];
-    if (!this._handleControlChangeOffCallbacks.hasOwnProperty(buttonId))
-      this._handleControlChangeOffCallbacks[buttonId] = [];
+
     // Add callback
-    this._handleControlChangeOnCallbacks[buttonId].push(onDepress);
-    this._handleControlChangeOffCallbacks[buttonId].push(onRelease);
+    if (callbacks.onDepress) {
+      if (!this._handleControlChangeOnCallbacks.hasOwnProperty(controlId)) {
+        this._handleControlChangeOnCallbacks[controlId] = [];
+      }
+
+      this._handleControlChangeOnCallbacks[controlId].push(callbacks.onDepress);
+    }
+
+    if (callbacks.onRelease) {
+      if (!this._handleControlChangeOffCallbacks.hasOwnProperty(controlId)) {
+        this._handleControlChangeOffCallbacks[controlId] = [];
+      }
+
+      this._handleControlChangeOffCallbacks[controlId].push(
+        callbacks.onRelease
+      );
+    }
+
+    if (callbacks.onRotation) {
+      if (!this._handleControlRotationCallbacks.hasOwnProperty(controlId)) {
+        this._handleControlRotationCallbacks[controlId] = [];
+      }
+
+      this._handleControlRotationCallbacks[controlId].push(
+        callbacks.onRotation
+      );
+    }
   }
 }
