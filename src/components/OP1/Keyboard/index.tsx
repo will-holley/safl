@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { BlackKey, WhiteKey, BlackKeyWidth, KeyGroup, Key } from "./Key";
+import { Key } from "./Key";
 
 const BlackKeys = styled.div`
   // Board Position
