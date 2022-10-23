@@ -30,6 +30,14 @@ export default createGlobalStyle`
     --cp-te-orange: rgb(240, 90, 36);
     --cp-te-white: white;
 
+    // OP-1 OS Colors (Incomplete)
+    // Source: https://teenage.engineering/products/op-1/original/modules
+    --cp-os-blue:#698eff;
+    --cp-os-green:#01ed96;
+    --cp-os-white: #f1f1f1;
+    --cp-os-red:#ff3a5d;
+    --cp-os-purple: #9256d7;
+
     // Colors
 
     --color-board: var(--cp-monochrome-light);
