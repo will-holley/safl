@@ -43,7 +43,8 @@ const OuterBorder = styled.div<{ pressed: boolean }>`
   padding: 8px;
 
   transition: ease-in-out 0.075s background-color;
-  background-color: ${({ pressed }) => (pressed ? "blue" : "transparent")};
+  background-color: ${({ pressed }) =>
+    pressed ? "var(--color-btn-press-feedback)" : "transparent"};
 `;
 
 const InnerBorder = styled.div<{ pressed: boolean }>`
@@ -66,7 +67,8 @@ const InnerBorder = styled.div<{ pressed: boolean }>`
   font-size: 10px;
   font-weight: 300;
 
-  color: ${({ pressed }) => (pressed ? "blue" : "inherit")};
+  color: ${({ pressed }) =>
+    pressed ? "var(--color-btn-press-feedback)" : "inherit"};
 `;
 
 const Button: React.FC<{

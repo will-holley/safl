@@ -25,9 +25,13 @@ export default createGlobalStyle`
     --cp-monochrome-text: #b2b2b2;
 
     // Teenage Engineering Website Colors
-    --cp-te-blue: rgb(0, 113, 187);
-    --cp-te-green: rgb(3 193 75);
+    --cp-te-blue: rgb(35, 174, 255);
+    --cp-te-green: rgb(23, 180, 83);
     --cp-te-orange: rgb(240, 90, 36);
+
+    // Colors
+
+    --color-btn-press-feedback: var(--cp-te-orange);
 
   }
 
