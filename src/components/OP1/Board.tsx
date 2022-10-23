@@ -26,7 +26,7 @@ const Board = styled.div`
 
   // Appearance
 
-  background-color: var(--cp-monochrome-light);
+  background-color: var(--color-board);
   border-radius: 20px;
 `;
 

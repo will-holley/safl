@@ -31,6 +31,8 @@ export default createGlobalStyle`
 
     // Colors
 
+    --color-board: var(--cp-monochrome-light);
+    --color-details: var(--cp-monochrome-dark);
     --color-btn-press-feedback: var(--cp-te-orange);
 
   }

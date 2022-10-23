@@ -13,9 +13,9 @@ const Container = styled.div<{
   height: 100%;
   width: 100%;
 
-  background-color: var(--cp-monochrome-light);
+  background-color: var(--color-board);
 
-  border: 1px solid var(--cp-monochrome-dark);
+  border: 1px solid var(--color-details);
   border-radius: 6px;
 
   padding: 1px;
@@ -45,7 +45,7 @@ const OuterBorder = styled.div<{ pressed: boolean }>`
   height: 100%;
   width: calc(var(--space-primary-unit-sm) - 4px);
 
-  border: 1px solid var(--cp-monochrome-dark);
+  border: 1px solid var(--color-details);
   border-radius: 50px;
 
   padding: 8px;
@@ -61,14 +61,14 @@ const InnerBorder = styled.div<{ pressed: boolean }>`
 
   border-width: 1px;
   border-style: solid;
-  border-color: var(--cp-monochrome-dark);
+  border-color: var(--color-details);
   border-radius: 50px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  background-color: var(--cp-monochrome-light);
+  background-color: var(--color-board);
 
   // TODO: Use Univers Next (https://www.qbn.com/topics/688428/) font.
 
