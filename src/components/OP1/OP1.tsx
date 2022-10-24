@@ -1,5 +1,3 @@
-import OP1Provider from "./context/provider";
-
 import Board from "./Board";
 import Keyboard from "./Keyboard";
 import ShiftButton from "./buttons/Shift";
@@ -12,20 +10,18 @@ import OrangeEncoder from "./encoders/Orange";
 
 const OP1: React.FC<{}> = ({}) => {
   return (
-    <OP1Provider>
-      <Board>
-        <>
-          <BlueEncoder />
-          <GreenEncoder />
-          <WhiteEncoder />
-          <OrangeEncoder />
-        </>
-        {/* <RewindButton />
+    <Board>
+      <>
+        <BlueEncoder />
+        <GreenEncoder />
+        <WhiteEncoder />
+        <OrangeEncoder />
+      </>
+      {/* <RewindButton />
         <ForwardButton />
         <ShiftButton /> */}
-        <Keyboard />
-      </Board>
-    </OP1Provider>
+      <Keyboard />
+    </Board>
   );
 };
 

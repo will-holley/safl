@@ -1,0 +1,36 @@
+// Partial list of (note midi number, note name) tuples
+// Full list: https://www.inspiredacoustics.com/en/MIDI_note_numbers_and_center_frequencies
+const MIDI_NOTES = [
+  [53, "F"],
+  [54, "F#"],
+  [55, "G"],
+  [56, "G#"],
+  [57, "A"],
+  [58, "A#"],
+  [59, "B"],
+  [60, "C"],
+  [61, "C#"],
+  [62, "D"],
+  [63, "D#"],
+  [64, "E"],
+  [65, "F"],
+  [66, "F#"],
+  [67, "G"],
+  [68, "G#"],
+  [69, "A"],
+  [70, "A#"],
+  [71, "B"],
+  [72, "C"],
+  [73, "C#"],
+  [74, "D"],
+  [75, "D#"],
+  [76, "E"],
+] as Array<[number, string]>;
+
+export const BLACK_KEYS = MIDI_NOTES.filter(([midiValue, keyName]) =>
+  keyName.includes("#")
+);
+
+export const WHITE_KEYS = MIDI_NOTES.filter(
+  ([midiValue, keyName]) => !keyName.includes("#")
+);
