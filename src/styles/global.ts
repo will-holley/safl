@@ -58,6 +58,7 @@ export default createGlobalStyle`
 
   * {
     box-sizing: border-box;
+    user-select: none;
   }
 
   body {
