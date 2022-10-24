@@ -9,10 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tonaljs/tonal": "^4.6.5",
+    "iconoir-react": "^5.3.2",
     "next": "12.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "styled-components": "^5.3.6",
+    "uuid4": "^2.0.3",
     "webmidi": "^3.0.21"
   },
   "devDependencies": {
@@ -20,6 +23,7 @@
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
     "@types/styled-components": "^5.1.26",
+    "@types/uuid4": "^2.0.0",
     "eslint": "8.26.0",
     "eslint-config-next": "12.3.1",
     "typescript": "4.8.4"
