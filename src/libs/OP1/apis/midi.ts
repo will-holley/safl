@@ -1,4 +1,5 @@
 import { WebMidi } from "webmidi";
+import uuid4 from "uuid4";
 import type {
   Input,
   NoteMessageEvent,
@@ -10,20 +11,42 @@ import type {
   onEncoderRotation,
 } from "./../types";
 
-type CallbackMap = {
-  [buttonId: number]: Array<CallableFunction>;
+// =================
+// ===== TYPES =====
+// =================
+
+type DepressionCallbackMap = {
+  [buttonId: number]: {
+    [listenerId: string]: onButtonDepress;
+  };
 };
+
+type ReleaseCallbackMap = {
+  [buttonId: number]: {
+    [listenerId: string]: onButtonRelease;
+  };
+};
+
+type RotationCallbackMap = {
+  [buttonId: number]: {
+    [listenerId: string]: onEncoderRotation;
+  };
+};
+
+// =================
+// ===== CLASS =====
+// =================
 
 export default class Midi {
   _driver: any;
   _input: Input | null = null;
 
   // Callbacks
-  _handleNoteOnCallbacks: CallbackMap = {};
-  _handleNoteOffCallbacks: CallbackMap = {};
-  _handleControlChangeOnCallbacks: CallbackMap = {};
-  _handleControlChangeOffCallbacks: CallbackMap = {};
-  _handleControlRotationCallbacks: CallbackMap = {};
+  _handleNoteOnCallbacks: DepressionCallbackMap = {};
+  _handleNoteOffCallbacks: ReleaseCallbackMap = {};
+  _handleControlChangeOnCallbacks: DepressionCallbackMap = {};
+  _handleControlChangeOffCallbacks: ReleaseCallbackMap = {};
+  _handleControlRotationCallbacks: RotationCallbackMap = {};
 
   get enabled() {
     return Boolean(this._input);
@@ -73,20 +96,37 @@ export default class Midi {
     );
   }
 
+  /**
+   * Triggers attached NoteOnCallbacks when a `noteon` is emitted.
+   * @param event
+   */
   _handleNoteOn(event: NoteMessageEvent): void {
     const number = event.note.number;
     if (this._handleNoteOnCallbacks[number]) {
-      this._handleNoteOnCallbacks[number].forEach((callback) => callback());
+      Object.values(this._handleNoteOnCallbacks[number]).forEach(
+        (callback: onButtonDepress) => callback()
+      );
     }
   }
 
+  /**
+   * Triggers attached NoteOffCallbacks when a `noteoff` is emitted.
+   * @param event
+   */
   _handleNoteOff(event: NoteMessageEvent): void {
     const number = event.note.number;
     if (this._handleNoteOffCallbacks[number]) {
-      this._handleNoteOffCallbacks[number].forEach((callback) => callback());
+      Object.values(this._handleNoteOffCallbacks[number]).forEach(
+        (callback: onButtonRelease) => callback()
+      );
     }
   }
 
+  /**
+   * Triggers attached encoder/button depression/release and encoder rotation callbacks
+   * when a `controlchange` event is emitted.
+   * @param event
+   */
   _handleControlChange(event: ControlChangeMessageEvent): void {
     const number = event.controller.number;
     const interactionValue = event.message.data[2];
@@ -96,42 +136,67 @@ export default class Midi {
       interactionValue === 127 &&
       this._handleControlChangeOnCallbacks[number]
     ) {
-      this._handleControlChangeOnCallbacks[number].forEach((callback) =>
-        callback()
+      Object.values(this._handleControlChangeOnCallbacks[number]).forEach(
+        (callback: onButtonDepress) => callback()
       );
-
-      // Button Release
-    } else if (
+    }
+    // Button Release
+    else if (
       interactionValue === 0 &&
       this._handleControlChangeOffCallbacks[number]
     ) {
-      this._handleControlChangeOffCallbacks[number].forEach((callback) =>
-        callback()
+      Object.values(this._handleControlChangeOffCallbacks[number]).forEach(
+        (callback: onButtonRelease) => callback()
       );
-    } else if (this._handleControlRotationCallbacks[number]) {
-      this._handleControlRotationCallbacks[number].forEach((callback) =>
-        callback(interactionValue)
+    }
+    // Encoder Rotation
+    else if (this._handleControlRotationCallbacks[number]) {
+      Object.values(this._handleControlRotationCallbacks[number]).forEach(
+        (callback: onEncoderRotation) => callback(interactionValue)
       );
     }
   }
 
+  /**
+   * Adds callbacks that are triggered when a `noteon` or `noteoff` event is emitted.
+   * @param buttonId
+   * @param callbacks
+   * @returns listenerId
+   */
   _addNoteCallbacks(
     buttonId: number,
     callbacks: {
       onDepress: onButtonDepress;
       onRelease: onButtonRelease;
     }
-  ): void {
+  ): string {
+    // The depression and release callbacks share a single listener id because they should always be managed
+    // in unison e.g. removed together.
+    const listenerId = uuid4();
+
     // Initialize arrays if necessary
     if (!this._handleNoteOnCallbacks.hasOwnProperty(buttonId))
-      this._handleNoteOnCallbacks[buttonId] = [];
+      this._handleNoteOnCallbacks[buttonId] = {};
     if (!this._handleNoteOffCallbacks.hasOwnProperty(buttonId))
-      this._handleNoteOffCallbacks[buttonId] = [];
+      this._handleNoteOffCallbacks[buttonId] = {};
     // Add callbacks
-    this._handleNoteOnCallbacks[buttonId].push(callbacks.onDepress);
-    this._handleNoteOffCallbacks[buttonId].push(callbacks.onRelease);
+    this._handleNoteOnCallbacks[buttonId][listenerId] = callbacks.onDepress;
+    this._handleNoteOffCallbacks[buttonId][listenerId] = callbacks.onRelease;
+
+    return listenerId;
   }
 
+  _removeNoteCallback(controlId: number, listenerId: string): void {
+    delete this._handleNoteOnCallbacks[controlId][listenerId];
+    delete this._handleNoteOffCallbacks[controlId][listenerId];
+  }
+
+  /**
+   * Adds callbacks that are triggered when a `controlchange` event is emitted.
+   * @param controlId
+   * @param callbacks
+   * @returns listenerId
+   */
   _addControlChangeCallbacks(
     controlId: number,
     callbacks: {
@@ -139,36 +204,53 @@ export default class Midi {
       onRelease?: onButtonRelease;
       onRotation?: onEncoderRotation;
     }
-  ): void {
+  ): string {
+    const listenerId = uuid4();
     // Initialize arrays if necessary
 
     // Add callback
     if (callbacks.onDepress) {
       if (!this._handleControlChangeOnCallbacks.hasOwnProperty(controlId)) {
-        this._handleControlChangeOnCallbacks[controlId] = [];
+        this._handleControlChangeOnCallbacks[controlId] = {};
       }
 
-      this._handleControlChangeOnCallbacks[controlId].push(callbacks.onDepress);
+      this._handleControlChangeOnCallbacks[controlId][listenerId] =
+        callbacks.onDepress;
     }
 
     if (callbacks.onRelease) {
       if (!this._handleControlChangeOffCallbacks.hasOwnProperty(controlId)) {
-        this._handleControlChangeOffCallbacks[controlId] = [];
+        this._handleControlChangeOffCallbacks[controlId] = {};
       }
 
-      this._handleControlChangeOffCallbacks[controlId].push(
-        callbacks.onRelease
-      );
+      this._handleControlChangeOffCallbacks[controlId][listenerId] =
+        callbacks.onRelease;
     }
 
     if (callbacks.onRotation) {
       if (!this._handleControlRotationCallbacks.hasOwnProperty(controlId)) {
-        this._handleControlRotationCallbacks[controlId] = [];
+        this._handleControlRotationCallbacks[controlId] = {};
       }
 
-      this._handleControlRotationCallbacks[controlId].push(
-        callbacks.onRotation
-      );
+      this._handleControlRotationCallbacks[controlId][listenerId] =
+        callbacks.onRotation;
+    }
+
+    return listenerId;
+  }
+
+  _removeControlChangeCallback(controlId: number, listenerId: string): void {
+    try {
+      delete this._handleControlChangeOnCallbacks[controlId][listenerId];
+      delete this._handleControlChangeOffCallbacks[controlId][listenerId];
+    } catch (error) {
+      // noop: Control had rotation, not depress/release callback assigned.
+    }
+
+    try {
+      delete this._handleControlRotationCallbacks[controlId][listenerId];
+    } catch (error) {
+      // noop: Control had depress/release, not rotation callback assigned.
     }
   }
 }

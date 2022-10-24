@@ -33,8 +33,14 @@ const OP1Provider: React.FC<{
     addPressListener: enabled
       ? (...args) => op1?.addPressListener(...args)
       : null,
+    removePressListener: enabled
+      ? (...args) => op1?.removePressListener(...args)
+      : null,
     addRotationListener: enabled
       ? (...args) => op1?.addRotationListener(...args)
+      : null,
+    removeRotationListener: enabled
+      ? (...args) => op1?.removeRotationListener(...args)
       : null,
   } as State;
 

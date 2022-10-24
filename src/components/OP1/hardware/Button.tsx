@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 import { useEffect, useState } from "react";
 import useOP1 from "../context/useOP1";
+import { ButtonType } from "../../../libs/OP1/types";
 
 const Container = styled.div<{
   column: number | null;
@@ -93,12 +94,15 @@ const Button: React.FC<{
   alignRight?: boolean;
   // Midi button id
   buttonId: number;
+  // Optional: Is button a keyboard key?
+  isKey?: boolean;
 }> = ({
   children,
   column = null,
   row = null,
   alignRight = false,
   buttonId,
+  isKey = false,
 }) => {
   const op1 = useOP1();
   const [pressed, setPressed] = useState<boolean>(false);
@@ -112,7 +116,8 @@ const Button: React.FC<{
     op1.addPressListener(
       buttonId,
       () => setPressed(true),
-      () => setPressed(false)
+      () => setPressed(false),
+      isKey ? ButtonType.Key : ButtonType.Control
     );
   }, [op1.enabled, op1.addPressListener]);
 
