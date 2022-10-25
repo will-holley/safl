@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 import { useEffect, useState } from "react";
-import useOP1 from "../context/useOP1";
-import { ButtonType } from "../../../libs/OP1/types";
+import useMidi from "@components/OP1/midi/useMidi";
+import { ButtonType } from "@T/op1";
+import { CallbackType } from "../midi/types";
 
 const Container = styled.div<{
   column: number | null;
@@ -93,7 +94,7 @@ const Button: React.FC<{
   // properly align black keys.
   alignRight?: boolean;
   // Midi button id
-  buttonId: number;
+  midiNumber: number;
   // Optional: Is button a keyboard key?
   isKey?: boolean;
 }> = ({
@@ -101,31 +102,34 @@ const Button: React.FC<{
   column = null,
   row = null,
   alignRight = false,
-  buttonId,
+  midiNumber,
   isKey = false,
 }) => {
-  const op1 = useOP1();
+  const midi = useMidi();
   const [pressed, setPressed] = useState<boolean>(false);
 
   // Set up a press listener
   useEffect(() => {
     // Wait for OP1
-    if (!op1.enabled) return;
+    if (!midi.enabled) return;
 
-    //@ts-ignore
-    op1.addPressListener(
-      buttonId,
+    midi.addCallback(
+      midiNumber,
       () => setPressed(true),
-      () => setPressed(false),
-      isKey ? ButtonType.Key : ButtonType.Control
+      isKey ? CallbackType.KeyDepression : CallbackType.ControlDepression
     );
-  }, [op1.enabled, op1.addPressListener]);
+    midi.addCallback(
+      midiNumber,
+      () => setPressed(false),
+      isKey ? CallbackType.KeyRelease : CallbackType.ControlRelease
+    );
+  }, [midi.enabled, midi.addCallback]);
 
   // RENDER
 
   // Some buttons may not provide Midi output, such as SHIFT and therefore are "disabled"
   // and should indicate this visually.
-  const isDisabled = buttonId === -1;
+  const isDisabled = midiNumber === -1;
 
   return (
     <Container

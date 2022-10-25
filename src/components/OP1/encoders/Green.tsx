@@ -1,5 +1,5 @@
 import Encoder from "../hardware/Encoder";
-import { Op1EncoderRotationControlIds } from "../../../libs/OP1/constants";
+import { Op1EncoderRotationControlIds } from "@T/op1";
 
 const GreenEncoder: React.FC<{}> = ({}) => {
   return (

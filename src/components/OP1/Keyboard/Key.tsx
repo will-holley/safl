@@ -26,7 +26,7 @@ export const Key: React.FC<{
 }> = ({ name, midiNoteNumber, alignRight = false }) => {
   return (
     <>
-      <Button alignRight={alignRight} buttonId={midiNoteNumber} isKey>
+      <Button alignRight={alignRight} midiNumber={midiNoteNumber} isKey>
         {name.includes("#") ? <Black>{name}</Black> : name}
       </Button>
     </>

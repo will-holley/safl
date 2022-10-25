@@ -5,6 +5,7 @@
       "@components/*": ["src/components/*"],
       "@constants/*": ["src/constants/*"],
       "@libs/*": ["src/libs/*"],
+      "@T/*": ["src/types/*"],
       "@utils/*": ["src/utils/*"]
     },
     "target": "es5",

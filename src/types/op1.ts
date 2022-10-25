@@ -1,3 +1,8 @@
+export enum ButtonType {
+  Control,
+  Key,
+}
+
 // Midi Id of each Encoder sent for Rotation events.
 export enum Op1EncoderRotationControlIds {
   BlueEncoder = 1,
