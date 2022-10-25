@@ -72,9 +72,9 @@ export type CallbacksMap =
   | EncoderRotationCallbacks;
 
 export enum CallbackType {
-  KeyDepression,
-  KeyRelease,
-  ControlDepression,
-  ControlRelease,
-  EncoderRotation,
+  KeyDepression = "KEY_DEPRESSION",
+  KeyRelease = "KEY_RELEASE",
+  ControlDepression = "CONTROL_DEPRESSION",
+  ControlRelease = "CONTROL_RELEASE",
+  EncoderRotation = "ENCODER_ROTATION",
 }

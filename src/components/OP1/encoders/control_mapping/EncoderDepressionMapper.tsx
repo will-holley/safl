@@ -16,25 +16,25 @@ import { DownloadCircledOutline } from "iconoir-react";
 import useMidi from "@components/OP1/midi/useMidi";
 
 const EncoderDepressionMapper: React.FC<{
-  onDepress: ControlDepressionCallback;
-}> = ({ onDepress }) => {
+  onDepression: ControlDepressionCallback;
+}> = ({ onDepression }) => {
   const midi = useMidi();
 
   // HANDLERS
 
-  const handleAddition = (controlId: Op1EncoderDepressMidiNumber): string => {
+  const handleAddition = (midiNumber: Op1EncoderDepressMidiNumber): string => {
     return midi.addCallback(
-      controlId,
-      onDepress,
+      midiNumber,
+      onDepression,
       CallbackType.ControlDepression
     );
   };
 
   const handleRemoval = (
-    controlId: Op1EncoderDepressMidiNumber,
+    midiNumber: Op1EncoderDepressMidiNumber,
     callbackId: string
   ): void => {
-    midi.removeCallback(controlId, callbackId, CallbackType.ControlRelease);
+    midi.removeCallback(midiNumber, callbackId, CallbackType.ControlRelease);
   };
 
   // RENDER

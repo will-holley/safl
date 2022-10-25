@@ -49,42 +49,42 @@ const GenericMapper: React.FC<{
 
   // STATE
 
-  const [controlId, setControlId] = useState<number | null>(null);
-  const [listenerId, setListenerId] = useState<string | null>(null);
+  const [midiNumber, setMidiNumber] = useState<number | null>(null);
+  const [callbackId, setCallbackId] = useState<string | null>(null);
 
   // EVENT HANDLERS
 
   const handleClick = () => {
-    const currentIndex = ORDERED_ENCODER_VALUES.indexOf(controlId);
+    const currentIndex = ORDERED_ENCODER_VALUES.indexOf(midiNumber);
     const nextIndex =
       currentIndex == ORDERED_ENCODER_VALUES.length ? 0 : currentIndex + 1;
     const newId = ORDERED_ENCODER_VALUES[nextIndex] || null;
 
     // Remove previous callbacks if present.
-    if (controlId) {
-      removeListener(controlId, listenerId as string);
-      setListenerId(null);
+    if (midiNumber) {
+      removeListener(midiNumber, callbackId as string);
+      setCallbackId(null);
     }
 
     // Add new callbacks if intended.
     if (newId) {
-      const _listenerId = addListener(newId);
-      setListenerId(_listenerId);
+      const id = addListener(newId);
+      setCallbackId(id);
     }
 
-    setControlId(newId);
+    setMidiNumber(newId);
   };
 
   // RENDER
 
   let color = "var(--cp-monochrome-text)";
-  if (controlId == midiNumbers.BlueEncoder) {
+  if (midiNumber == midiNumbers.BlueEncoder) {
     color = "var(--cp-te-blue)";
-  } else if (controlId == midiNumbers.GreenEncoder) {
+  } else if (midiNumber == midiNumbers.GreenEncoder) {
     color = "var(--cp-te-green)";
-  } else if (controlId == midiNumbers.WhiteEncoder) {
+  } else if (midiNumber == midiNumbers.WhiteEncoder) {
     color = "var(--cp-te-white)";
-  } else if (controlId == midiNumbers.OrangeEncoder) {
+  } else if (midiNumber == midiNumbers.OrangeEncoder) {
     color = "var(--cp-te-orange)";
   }
 
