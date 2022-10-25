@@ -41,9 +41,14 @@ const EncoderDepressionMapper: React.FC<{
 
   return (
     <GenericMapper
-      midiNumbers={Op1EncoderDepressMidiNumber}
-      addListener={handleAddition}
-      removeListener={handleRemoval}
+      midiNumbers={[
+        Op1EncoderDepressMidiNumber.BlueEncoder,
+        Op1EncoderDepressMidiNumber.GreenEncoder,
+        Op1EncoderDepressMidiNumber.OrangeEncoder,
+        Op1EncoderDepressMidiNumber.WhiteEncoder,
+      ]}
+      addCallback={handleAddition}
+      removeCallback={handleRemoval}
     >
       <DownloadCircledOutline />
     </GenericMapper>

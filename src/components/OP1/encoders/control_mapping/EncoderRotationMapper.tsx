@@ -37,9 +37,14 @@ const EncoderRotationMapper: React.FC<{
 
   return (
     <GenericMapper
-      midiNumbers={Op1EncoderRotationMidiNumber}
-      addListener={handleAddition}
-      removeListener={handleRemoval}
+      midiNumbers={[
+        Op1EncoderRotationMidiNumber.BlueEncoder,
+        Op1EncoderRotationMidiNumber.GreenEncoder,
+        Op1EncoderRotationMidiNumber.WhiteEncoder,
+        Op1EncoderRotationMidiNumber.OrangeEncoder,
+      ]}
+      addCallback={handleAddition}
+      removeCallback={handleRemoval}
     >
       <RefreshCircular />
     </GenericMapper>

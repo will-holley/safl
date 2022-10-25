@@ -1,10 +1,11 @@
 import { Scale } from "@tonaljs/tonal";
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useCallback } from "react";
 import styled from "styled-components";
 import {
   EncoderDepressionMapper,
   EncoderRotationMapper,
 } from "./OP1/encoders/control_mapping";
+import useMidi from "@components/OP1/midi/useMidi";
 
 // TYPES
 
@@ -85,12 +86,21 @@ const Layout = styled.div`
 
 // SELECTORS: Main Component
 export const ScaleSelector: React.FC<{}> = ({}) => {
+  const midi = useMidi();
+
   const { scaleName, setScale, rootNote, setRootNote, enabled, setEnabled } =
     useScaleSelector();
 
-  const handleChangeEnabled = () => setEnabled(!enabled);
+  /**
+   * Wrapping in `useCallback` ensures that the callback is re-passed to EncoderDepressionMapper
+   * after each subsequent call.  Alternatively, `enabled` is never updated and always attempts
+   * to be set as `true`.
+   */
+  const handleChangeEnabled = useCallback(() => {
+    setEnabled(!enabled);
+  }, [enabled]);
 
-  return (
+  return midi.enabled ? (
     <Container>
       <strong>Scale</strong>
       <Layout>
@@ -100,7 +110,7 @@ export const ScaleSelector: React.FC<{}> = ({}) => {
           checked={enabled}
           onChange={handleChangeEnabled}
         />
-        <EncoderDepressionMapper onDepress={handleChangeEnabled} />
+        <EncoderDepressionMapper onDepression={handleChangeEnabled} />
         <label>Scale</label>
         <select value={scaleName} onChange={(e) => setScale(e.target.value)}>
           <option>DISABLED</option>
@@ -126,5 +136,7 @@ export const ScaleSelector: React.FC<{}> = ({}) => {
         />
       </Layout>
     </Container>
+  ) : (
+    <></>
   );
 };
