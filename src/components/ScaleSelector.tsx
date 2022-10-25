@@ -7,6 +7,9 @@ import {
 } from "./OP1/encoders/control_mapping";
 import { RotationDirection } from "@components/OP1/midi/types";
 
+// Constants
+import { SCALE_NAMES, NOTE_NAMES } from "@constants/theory";
+
 // TYPES
 
 type State = {
@@ -18,11 +21,6 @@ type State = {
   setScale: (scaleName: string) => void;
   setEnabled: (enabled: boolean) => void;
 };
-
-// CONSTANTS
-
-const SCALE_NAMES = Scale.names().sort();
-const NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "A", "A#", "B"];
 
 // CONSTANTS: Initial Values
 
