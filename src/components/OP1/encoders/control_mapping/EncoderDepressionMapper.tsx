@@ -34,7 +34,7 @@ const EncoderDepressionMapper: React.FC<{
     midiNumber: Op1EncoderDepressMidiNumber,
     callbackId: string
   ): void => {
-    midi.removeCallback(midiNumber, callbackId, CallbackType.ControlRelease);
+    midi.removeCallback(midiNumber, callbackId, CallbackType.ControlDepression);
   };
 
   // RENDER
