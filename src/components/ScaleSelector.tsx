@@ -2,8 +2,8 @@ import { Scale } from "@tonaljs/tonal";
 import { createContext, useState, useContext } from "react";
 import styled from "styled-components";
 import {
-  EncoderDepressMapper,
-  EncoderRotateMapper,
+  EncoderDepressionMapper,
+  EncoderRotationMapper,
 } from "./OP1/encoders/control_mapping";
 
 // TYPES
@@ -100,7 +100,7 @@ export const ScaleSelector: React.FC<{}> = ({}) => {
           checked={enabled}
           onChange={handleChangeEnabled}
         />
-        {/* <EncoderDepressMapper onDepress={handleChangeEnabled} /> */}
+        <EncoderDepressionMapper onDepress={handleChangeEnabled} />
         <label>Scale</label>
         <select value={scaleName} onChange={(e) => setScale(e.target.value)}>
           <option>DISABLED</option>
@@ -108,22 +108,22 @@ export const ScaleSelector: React.FC<{}> = ({}) => {
             <option key={`scale-${name}`}>{name}</option>
           ))}
         </select>
-        {/* <EncoderRotateMapper
+        <EncoderRotationMapper
           onRotation={() => {
             console.log("SCALE ROTATED");
           }}
-        /> */}
+        />
         <label>Root</label>
         <select value={rootNote} onChange={(e) => setRootNote(e.target.value)}>
           {NOTE_NAMES.map((name) => (
             <option key={`note-${name}`}>{name}</option>
           ))}
         </select>
-        {/* <EncoderRotateMapper
+        <EncoderRotationMapper
           onRotation={() => {
             console.log("ROOT NOTE ROTATED");
           }}
-        /> */}
+        />
       </Layout>
     </Container>
   );

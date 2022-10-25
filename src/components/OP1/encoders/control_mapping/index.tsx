@@ -1,4 +1,4 @@
-import EncoderDepressMapper from "./DepressMapper";
-import EncoderRotateMapper from "./RotateMapper";
+import EncoderDepressionMapper from "./EncoderDepressionMapper";
+import EncoderRotationMapper from "./EncoderRotationMapper";
 
-export { EncoderDepressMapper, EncoderRotateMapper };
+export { EncoderDepressionMapper, EncoderRotationMapper };

@@ -20,12 +20,12 @@ export type State = {
   removeCallback: RemoveCallback | null;
 };
 
-type KeyDepressionCallback = (note: Note) => void;
-type KeyReleaseCallback = (note: Note) => void;
-type ControlDepressionCallback = () => void;
-type ControlReleaseCallback = () => void;
+export type KeyDepressionCallback = (note: Note) => void;
+export type KeyReleaseCallback = (note: Note) => void;
+export type ControlDepressionCallback = () => void;
+export type ControlReleaseCallback = () => void;
 // value: 0-127.  Will continuously return 0 or 127 after exceeding these values.
-type EncoderRotationCallback = (value: number) => void;
+export type EncoderRotationCallback = (value: number) => void;
 
 export type Callback =
   | KeyDepressionCallback

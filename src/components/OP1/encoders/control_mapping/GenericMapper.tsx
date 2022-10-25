@@ -3,18 +3,18 @@ import React, { cloneElement } from "react";
 import styled from "styled-components";
 
 // Hooks
-import useOP1 from "@components/OP1/context/useOP1";
+import useMidi from "@components/OP1/midi/useMidi";
 import { useState, useEffect, useRef } from "react";
 
 // Constants
 import {
-  Op1EncoderRotationControlIds,
-  Op1EncoderDepressControlIds,
-} from "@libs/OP1/constants";
+  Op1EncoderRotationMidiNumber,
+  Op1EncoderDepressMidiNumber,
+} from "@T/op1";
 
 // Types
 
-type ControlIds = Op1EncoderRotationControlIds | Op1EncoderDepressControlIds;
+type MidiNumbers = Op1EncoderRotationMidiNumber | Op1EncoderDepressMidiNumber;
 
 const Button = styled.div`
   display: flex;
@@ -24,28 +24,28 @@ const Button = styled.div`
 
 const GenericMapper: React.FC<{
   children: React.ReactElement;
-  controlIds: ControlIds;
-  addListener: (controlId: number) => string;
-  removeListener: (controlId: number, listenerId: string) => void;
+  midiNumbers: MidiNumbers;
+  addListener: (midiNumber: number) => string;
+  removeListener: (midiNumber: number, callbackId: string) => void;
 }> = ({
   // Icon to display
   children,
-  controlIds,
+  midiNumbers,
   addListener,
   removeListener,
 }) => {
   // CONSTANTS
   const ORDERED_ENCODER_VALUES = [
     null,
-    controlIds.BlueEncoder,
-    controlIds.GreenEncoder,
-    controlIds.WhiteEncoder,
-    controlIds.OrangeEncoder,
+    midiNumbers.BlueEncoder,
+    midiNumbers.GreenEncoder,
+    midiNumbers.WhiteEncoder,
+    midiNumbers.OrangeEncoder,
   ];
 
   // HOOKS
 
-  const op1 = useOP1();
+  const midi = useMidi();
 
   // STATE
 
@@ -109,18 +109,18 @@ const GenericMapper: React.FC<{
   // RENDER
 
   let color = "var(--cp-monochrome-text)";
-  if (controlId == controlIds.BlueEncoder) {
+  if (controlId == midiNumbers.BlueEncoder) {
     color = "var(--cp-te-blue)";
-  } else if (controlId == controlIds.GreenEncoder) {
+  } else if (controlId == midiNumbers.GreenEncoder) {
     color = "var(--cp-te-green)";
-  } else if (controlId == controlIds.WhiteEncoder) {
+  } else if (controlId == midiNumbers.WhiteEncoder) {
     color = "var(--cp-te-white)";
-  } else if (controlId == controlIds.OrangeEncoder) {
+  } else if (controlId == midiNumbers.OrangeEncoder) {
     color = "var(--cp-te-orange)";
   }
 
   return (
-    op1.enabled && (
+    midi.enabled && (
       <Button onClick={handleClick}>{cloneElement(children, { color })}</Button>
     )
   );
