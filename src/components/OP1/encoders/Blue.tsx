@@ -6,7 +6,7 @@ const BlueEncoder: React.FC<{}> = ({}) => {
     <Encoder
       startColumn={9}
       color="var(--cp-te-blue)"
-      controlId={Op1EncoderRotationMidiNumber.BlueEncoder}
+      midiNumber={Op1EncoderRotationMidiNumber.BlueEncoder}
     />
   );
 };

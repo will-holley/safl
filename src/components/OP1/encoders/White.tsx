@@ -6,7 +6,7 @@ const WhiteEncoder: React.FC<{}> = ({}) => {
     <Encoder
       startColumn={13}
       color="var(--cp-te-white)"
-      controlId={Op1EncoderRotationMidiNumber.WhiteEncoder}
+      midiNumber={Op1EncoderRotationMidiNumber.WhiteEncoder}
     />
   );
 };

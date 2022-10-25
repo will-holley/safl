@@ -123,7 +123,7 @@ const Button: React.FC<{
       () => setPressed(false),
       isKey ? CallbackType.KeyRelease : CallbackType.ControlRelease
     );
-  }, [midi.enabled]);
+  }, [midi.enabled, isKey, midiNumber, midi]);
 
   // RENDER
 

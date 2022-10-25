@@ -68,8 +68,8 @@ const Encoder: React.FC<{
   startColumn: number;
   color: string;
   monochromatic?: boolean;
-  controlId: number;
-}> = ({ startColumn, color, monochromatic = false, controlId }) => {
+  midiNumber: number;
+}> = ({ startColumn, color, monochromatic = false, midiNumber }) => {
   const midi = useMidi();
 
   const [rotation, setRotation] = useState<number>(0);
@@ -80,13 +80,13 @@ const Encoder: React.FC<{
     if (!midi.enabled) return;
 
     midi.addCallback(
-      controlId,
+      midiNumber,
       (direction: RotationDirection) => {
         setRotation((rotation) => rotation + direction * DEG_PER_ROTATION);
       },
       CallbackType.EncoderRotation
     );
-  }, [midi.enabled]);
+  }, [midi.enabled, midi, midiNumber]);
 
   return (
     <Container startColumn={startColumn}>

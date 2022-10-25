@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import useOP1 from "../context/useOP1";
 
 import Button from "../hardware/Button";
 
