@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import useMidi from "@components/OP1/midi/useMidi";
-import { CallbackType } from "../midi/types";
+import { CallbackType, RotationDirection } from "../midi/types";
 
 const Container = styled.div<{ startColumn: number }>`
   grid-column-start: ${({ startColumn }) => startColumn};
@@ -72,7 +72,6 @@ const Encoder: React.FC<{
 }> = ({ startColumn, color, monochromatic = false, controlId }) => {
   const midi = useMidi();
 
-  const prevControlValue = useRef<number | null>(null);
   const [rotation, setRotation] = useState<number>(0);
 
   // Set up a press listener
@@ -82,30 +81,8 @@ const Encoder: React.FC<{
 
     midi.addCallback(
       controlId,
-      (value: number) => {
-        // Don't use the absolute value for rotation because it is limited in range
-        // between 0 and 127. Rather, use the direction of change.
-
-        // Ignore the first rotation. It will be used to baseline directionality.
-        if (prevControlValue.current === null) {
-          prevControlValue.current = value;
-          return;
-        }
-
-        let direction: number;
-        if (
-          // Greater value or continuing at max indicates rotation to the right
-          value > prevControlValue.current ||
-          (value === 127 && prevControlValue.current === 127)
-        ) {
-          direction = 1;
-        } else {
-          // If it's not being rotated to the right, it's being rotated to the left
-          direction = -1;
-        }
-
+      (direction: RotationDirection) => {
         setRotation((rotation) => rotation + direction * DEG_PER_ROTATION);
-        prevControlValue.current = value;
       },
       CallbackType.EncoderRotation
     );

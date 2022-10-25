@@ -20,12 +20,16 @@ export type State = {
   removeCallback: RemoveCallback;
 };
 
+export enum RotationDirection {
+  Left = -1,
+  Right = 1,
+}
+
 export type KeyDepressionCallback = (note: Note) => void;
 export type KeyReleaseCallback = (note: Note) => void;
 export type ControlDepressionCallback = () => void;
 export type ControlReleaseCallback = () => void;
-// value: 0-127.  Will continuously return 0 or 127 after exceeding these values.
-export type EncoderRotationCallback = (value: number) => void;
+export type EncoderRotationCallback = (direction: RotationDirection) => void;
 
 export type Callback =
   | KeyDepressionCallback

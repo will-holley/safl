@@ -18,7 +18,7 @@ import type {
   ControlChangeMessageEvent,
 } from "webmidi";
 import type { Callback } from "./types";
-import { CallbackType } from "./types";
+import { CallbackType, RotationDirection } from "./types";
 
 // Reducer
 import { initialState, reducer, ActionType } from "./reducer";
@@ -124,11 +124,15 @@ const MidiProvider: React.FC<{
     (event: ControlChangeMessageEvent): void => {
       const midiNumber = event.controller.number;
       const interactionValue = event.message.data[2];
-
       // Encoder Rotation
       if (encoderRotationCallbacks[midiNumber]) {
         Object.values(encoderRotationCallbacks[midiNumber]).forEach(
-          (callback) => callback(interactionValue)
+          (callback) =>
+            callback(
+              interactionValue === 1
+                ? RotationDirection.Right
+                : RotationDirection.Left
+            )
         );
       }
     },
