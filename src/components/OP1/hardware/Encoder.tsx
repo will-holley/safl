@@ -109,7 +109,7 @@ const Encoder: React.FC<{
       },
       CallbackType.EncoderRotation
     );
-  }, [midi.enabled, midi.addCallback]);
+  }, [midi.enabled]);
 
   return (
     <Container startColumn={startColumn}>

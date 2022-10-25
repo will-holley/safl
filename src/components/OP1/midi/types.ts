@@ -16,8 +16,8 @@ type RemoveCallback = (
 
 export type State = {
   enabled: boolean;
-  addCallback: AddCallback | null;
-  removeCallback: RemoveCallback | null;
+  addCallback: AddCallback;
+  removeCallback: RemoveCallback;
 };
 
 export type KeyDepressionCallback = (note: Note) => void;

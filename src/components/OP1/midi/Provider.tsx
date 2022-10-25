@@ -1,5 +1,5 @@
 // Hooks
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useReducer } from "react";
 
 // Libs
 import { WebMidi } from "webmidi";
@@ -17,16 +17,11 @@ import type {
   NoteMessageEvent,
   ControlChangeMessageEvent,
 } from "webmidi";
-import type {
-  KeyDepressionCallbacks,
-  KeyReleaseCallbacks,
-  ControlDepressionCallbacks,
-  ControlReleaseCallbacks,
-  EncoderRotationCallbacks,
-  Callback,
-  CallbacksMap,
-} from "./types";
+import type { Callback } from "./types";
 import { CallbackType } from "./types";
+
+// Reducer
+import { initialState, reducer, ActionType } from "./reducer";
 
 const MidiProvider: React.FC<{
   children: React.ReactElement | Array<React.ReactElement>;
@@ -36,44 +31,14 @@ const MidiProvider: React.FC<{
   const [input, setInput] = useState<Input | null>(null);
 
   // STATE
-  const [keyDepressionCallbacks, setKeyDepressionCallbacks] =
-    useState<KeyDepressionCallbacks>({});
-  const [keyReleaseCallbacks, setKeyReleaseCallbacks] =
-    useState<KeyReleaseCallbacks>({});
-  const [ctrlDepressionCallbacks, setCtrlDepressionCallbacks] =
-    useState<ControlDepressionCallbacks>({});
-  const [ctrlReleaseCallbacks, setCtrlReleaseCallbacks] =
-    useState<ControlReleaseCallbacks>({});
-  const [encoderRotationCallbacks, setEncoderRotationCallbacks] =
-    useState<EncoderRotationCallbacks>({});
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const keyDepressionCallbacks = state[CallbackType.KeyDepression];
+  const keyReleaseCallbacks = state[CallbackType.KeyRelease];
+  const ctrlDepressionCallbacks = state[CallbackType.ControlDepression];
+  const ctrlReleaseCallbacks = state[CallbackType.ControlRelease];
+  const encoderRotationCallbacks = state[CallbackType.EncoderRotation];
 
   // HELPERS
-
-  /**
-   * Determines which state setter to use based on the type of callback provided.
-   */
-  const getSetter = (callbackType: CallbackType): React.SetStateAction<any> => {
-    switch (callbackType) {
-      case CallbackType.KeyDepression: {
-        return setKeyDepressionCallbacks;
-      }
-      case CallbackType.KeyRelease: {
-        return setKeyReleaseCallbacks;
-      }
-      case CallbackType.ControlDepression: {
-        return setCtrlDepressionCallbacks;
-      }
-      case CallbackType.ControlRelease: {
-        return setCtrlReleaseCallbacks;
-      }
-      case CallbackType.EncoderRotation: {
-        return setEncoderRotationCallbacks;
-      }
-      default: {
-        throw new Error();
-      }
-    }
-  };
 
   const addCallback = (
     midiNumber: number,
@@ -81,14 +46,13 @@ const MidiProvider: React.FC<{
     callbackType: CallbackType
   ): string => {
     const callbackId = uuid4();
-    const setter = getSetter(callbackType);
-    setter((prevState: CallbacksMap) => {
-      // Initialize if necessary.
-      if (!prevState.hasOwnProperty(midiNumber)) prevState[midiNumber] = {};
-      prevState[midiNumber][callbackId] = callback;
-      return prevState;
+    dispatch({
+      type: ActionType.Add,
+      midiNumber,
+      callbackId,
+      callbackType,
+      callback,
     });
-
     return callbackId;
   };
 
@@ -97,11 +61,7 @@ const MidiProvider: React.FC<{
     callbackId: string,
     callbackType: CallbackType
   ): void => {
-    const setter = getSetter(callbackType);
-    setter((prevState: CallbacksMap) => {
-      delete prevState[midiNumber][callbackId];
-      return prevState;
-    });
+    dispatch({ type: ActionType.Remove, midiNumber, callbackId, callbackType });
   };
 
   // EVENT HANDLERS
@@ -251,8 +211,8 @@ const MidiProvider: React.FC<{
     <Context.Provider
       value={{
         enabled,
-        addCallback: enabled ? addCallback : null,
-        removeCallback: enabled ? removeCallback : null,
+        addCallback,
+        removeCallback,
       }}
     >
       {children}
