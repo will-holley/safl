@@ -2,8 +2,7 @@ import type { NextPage } from "next";
 
 import MidiProvider, { Context as MidiContext } from "@components/OP1/midi";
 import OP1 from "@components/OP1/OP1";
-import {
-  ScaleSelector,
+import ScaleSelector, {
   ScaleSelectorProvider,
 } from "@components/ScaleSelector";
 import ControlPanel from "@components/ControlPanel";

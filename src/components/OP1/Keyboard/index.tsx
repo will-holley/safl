@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import { Key } from "./Key";
 
-import { useScaleSelector } from "../../ScaleSelector";
+import { useScaleSelector } from "@components/ScaleSelector";
 
 import { BLACK_KEYS, WHITE_KEYS } from "../../../constants/keyboard";
 

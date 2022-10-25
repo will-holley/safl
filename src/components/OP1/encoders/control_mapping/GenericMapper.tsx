@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 // Hooks
 import useMidi from "@components/OP1/midi/useMidi";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const Button = styled.div`
   display: flex;
@@ -37,20 +37,6 @@ const GenericMapper: React.FC<{
   const [midiNumber, setMidiNumber] = useState<number | null>(null);
   const [callbackId, setCallbackId] = useState<string | null>(null);
 
-  // EFFECTS
-
-  /**
-   * Triggered by changes to Midi Number and addCallback.
-   * If either is updated and both values are present, callback
-   * is re-added for this Midi Number.
-   */
-  useEffect(() => {
-    if (midiNumber && addCallback) {
-      const id = addCallback(midiNumber);
-      setCallbackId(id);
-    }
-  }, [midiNumber, addCallback]);
-
   // EVENT HANDLERS
 
   /**
@@ -67,6 +53,11 @@ const GenericMapper: React.FC<{
     if (midiNumber && callbackId) {
       removeCallback(midiNumber, callbackId);
       setCallbackId(null);
+    }
+
+    if (nextMidiNumber) {
+      const id = addCallback(nextMidiNumber);
+      setCallbackId(id);
     }
 
     setMidiNumber(nextMidiNumber);
