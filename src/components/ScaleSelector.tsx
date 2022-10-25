@@ -6,6 +6,7 @@ import {
   EncoderRotationMapper,
 } from "./OP1/encoders/control_mapping";
 import useMidi from "@components/OP1/midi/useMidi";
+import { RotationDirection } from "@components/OP1/midi/types";
 
 // TYPES
 
@@ -100,6 +101,32 @@ export const ScaleSelector: React.FC<{}> = ({}) => {
     setEnabled(!enabled);
   }, [enabled]);
 
+  const handleChangeScaleWithRotation = useCallback(
+    (direction: RotationDirection) => {
+      const index = SCALE_NAMES.indexOf(scaleName);
+      const nextIndex = index + direction;
+      let next: string;
+      if (nextIndex === SCALE_NAMES.length) next = SCALE_NAMES[0];
+      else if (nextIndex === -1) next = SCALE_NAMES[SCALE_NAMES.length - 1];
+      else next = SCALE_NAMES[nextIndex];
+      setScale(next);
+    },
+    [scaleName]
+  );
+
+  const handleChangeRootNoteWithRotation = useCallback(
+    (direction: RotationDirection) => {
+      const index = NOTE_NAMES.indexOf(rootNote);
+      const nextIndex = index + direction;
+      let next: string;
+      if (nextIndex === NOTE_NAMES.length) next = NOTE_NAMES[0];
+      else if (nextIndex === -1) next = NOTE_NAMES[NOTE_NAMES.length - 1];
+      else next = NOTE_NAMES[nextIndex];
+      setRootNote(next);
+    },
+    [rootNote]
+  );
+
   return midi.enabled ? (
     <Container>
       <strong>Scale</strong>
@@ -113,27 +140,18 @@ export const ScaleSelector: React.FC<{}> = ({}) => {
         <EncoderDepressionMapper onDepression={handleChangeEnabled} />
         <label>Scale</label>
         <select value={scaleName} onChange={(e) => setScale(e.target.value)}>
-          <option>DISABLED</option>
           {SCALE_NAMES.map((name) => (
             <option key={`scale-${name}`}>{name}</option>
           ))}
         </select>
-        <EncoderRotationMapper
-          onRotation={() => {
-            console.log("SCALE ROTATED");
-          }}
-        />
+        <EncoderRotationMapper onRotation={handleChangeScaleWithRotation} />
         <label>Root</label>
         <select value={rootNote} onChange={(e) => setRootNote(e.target.value)}>
           {NOTE_NAMES.map((name) => (
             <option key={`note-${name}`}>{name}</option>
           ))}
         </select>
-        <EncoderRotationMapper
-          onRotation={() => {
-            console.log("ROOT NOTE ROTATED");
-          }}
-        />
+        <EncoderRotationMapper onRotation={handleChangeRootNoteWithRotation} />
       </Layout>
     </Container>
   ) : (
