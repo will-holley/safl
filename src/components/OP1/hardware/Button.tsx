@@ -108,10 +108,14 @@ const Button: React.FC<{
   const midi = useMidi();
   const [pressed, setPressed] = useState<boolean>(false);
 
+  // Some buttons may not provide Midi output, such as SHIFT and therefore are "disabled"
+  // and should indicate this visually.
+  const isDisabled = midiNumber === -1;
+
   // Set up a press listener
   useEffect(() => {
     // Wait for OP1
-    if (!midi.enabled) return;
+    if (!midi.enabled || isDisabled) return;
 
     midi.addCallback(
       midiNumber,
@@ -123,13 +127,9 @@ const Button: React.FC<{
       () => setPressed(false),
       isKey ? CallbackType.KeyRelease : CallbackType.ControlRelease
     );
-  }, [midi.enabled, isKey, midiNumber, midi]);
+  }, [midi.enabled, isKey, midiNumber, midi, isDisabled]);
 
   // RENDER
-
-  // Some buttons may not provide Midi output, such as SHIFT and therefore are "disabled"
-  // and should indicate this visually.
-  const isDisabled = midiNumber === -1;
 
   return (
     <Container
