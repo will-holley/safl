@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 // Hooks
 import useMidi from "@components/OP1/midi/useMidi";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 
 // Constants
 import {
@@ -51,37 +51,6 @@ const GenericMapper: React.FC<{
 
   const [controlId, setControlId] = useState<number | null>(null);
   const [listenerId, setListenerId] = useState<string | null>(null);
-  const listenerAdded = useRef<boolean>(false);
-
-  // EFFECTS
-
-  /**
-   * Set flag once listener has been added.
-   */
-  // useEffect(() => {
-  //   if (controlId && listenerId && !listenerAdded.current) {
-  //     console.log("Listener initialized");
-  //   }
-  // }, [controlId, listenerId]);
-
-  /**
-   * When a callback's control flow changes in response to its previous invocation
-   * (i.e. it modifies a value that it reads, for example, when flipping the value of
-   * a boolean flag with `set(!value)`), it is necessary to refresh the listener to use
-   * the new callback.
-   */
-  // useEffect(() => {
-  //   // If listener is added during this cycle, wait for addListener to be updated.
-  //   if (!listenerAdded.current && listenerId) {
-  //     listenerAdded.current = true;
-  //   } else if (listenerAdded.current) {
-  //     // Refresh listener
-  //     console.log("Refreshing Listener");
-  //     removeListener(controlId as number, listenerId as string);
-  //     const updatedListenerId = addListener(controlId as number);
-  //     setListenerId(updatedListenerId);
-  //   }
-  // }, [addListener, listenerId, controlId]);
 
   // EVENT HANDLERS
 
