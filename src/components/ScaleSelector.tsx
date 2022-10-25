@@ -5,7 +5,6 @@ import {
   EncoderDepressionMapper,
   EncoderRotationMapper,
 } from "./OP1/encoders/control_mapping";
-import useMidi from "@components/OP1/midi/useMidi";
 import { RotationDirection } from "@components/OP1/midi/types";
 
 // TYPES
@@ -87,8 +86,6 @@ const Layout = styled.div`
 
 // SELECTORS: Main Component
 export const ScaleSelector: React.FC<{}> = ({}) => {
-  const midi = useMidi();
-
   const { scaleName, setScale, rootNote, setRootNote, enabled, setEnabled } =
     useScaleSelector();
 
@@ -127,7 +124,7 @@ export const ScaleSelector: React.FC<{}> = ({}) => {
     [rootNote]
   );
 
-  return midi.enabled ? (
+  return (
     <Container>
       <strong>Scale</strong>
       <Layout>
@@ -154,7 +151,5 @@ export const ScaleSelector: React.FC<{}> = ({}) => {
         <EncoderRotationMapper onRotation={handleChangeRootNoteWithRotation} />
       </Layout>
     </Container>
-  ) : (
-    <></>
   );
 };

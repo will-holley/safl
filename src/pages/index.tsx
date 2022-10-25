@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 
-import MidiProvider from "@components/OP1/midi/Provider";
+import MidiProvider, { Context as MidiContext } from "@components/OP1/midi";
 import OP1 from "@components/OP1/OP1";
 import {
   ScaleSelector,
@@ -14,9 +14,15 @@ const Home: NextPage = () => {
       <MidiProvider>
         <ScaleSelectorProvider>
           <OP1 />
-          <ControlPanel>
-            <ScaleSelector />
-          </ControlPanel>
+          <MidiContext.Consumer>
+            {({ enabled }) =>
+              enabled && (
+                <ControlPanel>
+                  <ScaleSelector />
+                </ControlPanel>
+              )
+            }
+          </MidiContext.Consumer>
         </ScaleSelectorProvider>
       </MidiProvider>
     </div>
