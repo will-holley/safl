@@ -16,12 +16,13 @@ function reducer(state: State, action: Action) {
   switch (action.type) {
     case ActionType.SwitchEnabled:
       return { ...state, enabled: !state.enabled };
-    case ActionType.SetRootNote:
+    case ActionType.SetRootNote: {
       return {
         ...state,
         rootNote: action.value,
         notes: getScale(action.value, state.scaleName).notes,
       };
+    }
     case ActionType.SetScale: {
       return {
         ...state,
@@ -67,8 +68,9 @@ function reducer(state: State, action: Action) {
         notes: getScale(state.rootNote, nextScaleName).notes,
       };
     }
-    default:
+    default: {
       return state;
+    }
   }
 }
 
