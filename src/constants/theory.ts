@@ -9,6 +9,8 @@ export const NOTE_NAMES = [
   "E",
   "F",
   "F#",
+  "G",
+  "G#",
   "A",
   "A#",
   "B",
