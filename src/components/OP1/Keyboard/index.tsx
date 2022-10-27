@@ -4,7 +4,9 @@ import { Key } from "./Key";
 
 import { useScaleSelector } from "@components/ScaleSelector";
 
-import { BLACK_KEYS, WHITE_KEYS } from "../../../constants/keyboard";
+import { BLACK_KEYS, WHITE_KEYS } from "@constants/keyboard";
+
+import { ScaleDegree } from "@T/theory";
 
 const BlackKeys = styled.div`
   // Board Position
@@ -43,34 +45,65 @@ const WhiteKeys = styled.div`
 
 const Keyboard: React.FC<{}> = ({}) => {
   const scale = useScaleSelector();
+
+  function scaleData(keyNames: Array<string>): {
+    name: string;
+    included: boolean;
+    degree: null | ScaleDegree;
+  } {
+    let included = true;
+    let degree = null;
+    let name = keyNames[0]; // default to sharp
+    if (scale.enabled) {
+      if (scale.notes.includes(keyNames[0])) {
+        // noop; include as sharp by default
+      } else if (scale.notes.includes(keyNames[0])) {
+        name = keyNames[1];
+        included = true;
+      } else {
+        included = false;
+      }
+
+      // Determine degree
+      if (included) {
+        const index = scale.notes.indexOf(name);
+        degree = ScaleDegree[index + 1] as unknown as ScaleDegree;
+      }
+    }
+
+    return { name, included, degree };
+  }
+
   return (
     <>
       <BlackKeys>
-        {BLACK_KEYS.map(([midiNoteNumber, keyName]: any, index) => (
-          <Key
-            key={`key-${midiNoteNumber}`}
-            name={keyName}
-            midiNoteNumber={
-              scale.enabled && !scale.notes.includes(keyName)
-                ? -1
-                : midiNoteNumber
-            }
-            alignRight={[0, 3, 5, 8].includes(index)}
-          />
-        ))}
+        {BLACK_KEYS.map(([midiNoteNumber, keyNames]: any, index) => {
+          const sd = scaleData(keyNames);
+          return (
+            <Key
+              key={`key-${midiNoteNumber}`}
+              name={sd.name}
+              midiNoteNumber={midiNoteNumber}
+              scaleDegree={sd.degree}
+              enable={sd.included}
+              alignRight={[0, 3, 5, 8].includes(index)}
+            />
+          );
+        })}
       </BlackKeys>
       <WhiteKeys>
-        {WHITE_KEYS.map(([midiNoteNumber, keyName]: any) => (
-          <Key
-            key={`key-${midiNoteNumber}`}
-            name={keyName}
-            midiNoteNumber={
-              scale.enabled && !scale.notes.includes(keyName)
-                ? -1
-                : midiNoteNumber
-            }
-          />
-        ))}
+        {WHITE_KEYS.map(([midiNoteNumber, keyNames]: any) => {
+          const sd = scaleData(keyNames);
+          return (
+            <Key
+              key={`key-${midiNoteNumber}`}
+              scaleDegree={sd.degree}
+              name={sd.name}
+              enable={sd.included}
+              midiNoteNumber={midiNoteNumber}
+            />
+          );
+        })}
       </WhiteKeys>
     </>
   );
