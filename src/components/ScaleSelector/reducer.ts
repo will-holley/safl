@@ -9,7 +9,7 @@ import { ActionType } from "./types";
 import { SCALE_NAMES, NOTE_NAMES } from "@constants/theory";
 
 export function addScaleToState(state: State): State {
-  const scale = Scale.get(`${state.rootNote} ${state.scaleName}`);
+  const scale = Scale.get(`${state.tonic} ${state.scaleName}`);
   state.notes = scale.notes;
   state.intervals = scale.intervals;
   return state;
@@ -25,26 +25,26 @@ function reducer(state: State, action: Action) {
     switch (action.type) {
       case ActionType.SwitchEnabled:
         return { ...state, enabled: !state.enabled };
-      case ActionType.SetRootNote: {
-        return { ...state, rootNote: action.value };
+      case ActionType.SetTonic: {
+        return { ...state, tonic: action.value };
       }
       case ActionType.SetScale: {
         return { ...state, scaleName: action.value };
       }
-      case ActionType.CycleRootNote: {
-        const index = NOTE_NAMES.indexOf(state.rootNote);
+      case ActionType.CycleTonic: {
+        const index = NOTE_NAMES.indexOf(state.tonic);
         const nextIndex = index + action.direction;
 
-        let nextRootNote: string;
+        let nextTonic: string;
         if (nextIndex === NOTE_NAMES.length) {
-          nextRootNote = NOTE_NAMES[0];
+          nextTonic = NOTE_NAMES[0];
         } else if (nextIndex === -1) {
-          nextRootNote = NOTE_NAMES[NOTE_NAMES.length - 1];
+          nextTonic = NOTE_NAMES[NOTE_NAMES.length - 1];
         } else {
-          nextRootNote = NOTE_NAMES[nextIndex];
+          nextTonic = NOTE_NAMES[nextIndex];
         }
 
-        return { ...state, rootNote: nextRootNote };
+        return { ...state, tonic: nextTonic };
       }
       case ActionType.CycleScale: {
         const index = SCALE_NAMES.indexOf(state.scaleName);

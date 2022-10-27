@@ -2,7 +2,7 @@ import { RotationDirection } from "@components/OP1/midi/types";
 
 export interface State {
   enabled: boolean;
-  rootNote: string;
+  tonic: string;
   scaleName: string;
   notes: Array<string>;
   intervals: Array<string>;
@@ -10,9 +10,9 @@ export interface State {
 
 export enum ActionType {
   SwitchEnabled = "SWITCH_ENABLED",
-  SetRootNote = "SET_ROOT_NOTE",
+  SetTonic = "SET_ROOT_NOTE",
   SetScale = "SET_SCALE",
-  CycleRootNote = "CYCLE_ROOT_NOTE",
+  CycleTonic = "CYCLE_ROOT_NOTE",
   CycleScale = "CYCLE_SCALE",
 }
 
@@ -24,8 +24,8 @@ interface SwitchEnabledAction extends BaseAction {
   type: ActionType.SwitchEnabled;
 }
 
-interface SetRootNoteAction extends BaseAction {
-  type: ActionType.SetRootNote;
+interface SetTonicAction extends BaseAction {
+  type: ActionType.SetTonic;
   value: string;
 }
 
@@ -34,8 +34,8 @@ interface SetScaleAction extends BaseAction {
   value: string;
 }
 
-interface CycleRootNoteAction extends BaseAction {
-  type: ActionType.CycleRootNote;
+interface CycleTonicAction extends BaseAction {
+  type: ActionType.CycleTonic;
   direction: RotationDirection;
 }
 
@@ -46,9 +46,9 @@ interface CycleScaleAction extends BaseAction {
 
 export type Action =
   | SwitchEnabledAction
-  | SetRootNoteAction
+  | SetTonicAction
   | SetScaleAction
-  | CycleRootNoteAction
+  | CycleTonicAction
   | CycleScaleAction;
 
 export interface ContextState extends State {

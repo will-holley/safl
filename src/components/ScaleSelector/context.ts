@@ -5,7 +5,7 @@ import reducer from "./reducer";
 
 export const DEFAULT_STATE = {
   //@ts-ignore
-  ...reducer({ enabled: false, rootNote: "C", scaleName: "major" }, {}),
+  ...reducer({ enabled: false, tonic: "C", scaleName: "major" }, {}),
   dispatch: () => {},
 };
 
