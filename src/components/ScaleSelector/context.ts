@@ -1,12 +1,11 @@
 import { createContext } from "react";
 import { Scale } from "@tonaljs/tonal";
 import type { ContextState } from "./types";
+import reducer from "./reducer";
 
 export const DEFAULT_STATE = {
-  enabled: false,
-  rootNote: "C",
-  scaleName: "major",
-  notes: Scale.get("C major").notes,
+  //@ts-ignore
+  ...reducer({ enabled: false, rootNote: "C", scaleName: "major" }, {}),
   dispatch: () => {},
 };
 
