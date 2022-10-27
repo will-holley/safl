@@ -11,6 +11,7 @@ import { SCALE_NAMES, NOTE_NAMES } from "@constants/theory";
 export function addScaleToState(state: State): State {
   const scale = Scale.get(`${state.rootNote} ${state.scaleName}`);
   state.notes = scale.notes;
+  state.intervals = scale.intervals;
   return state;
 }
 

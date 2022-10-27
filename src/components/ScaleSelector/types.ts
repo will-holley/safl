@@ -5,6 +5,7 @@ export interface State {
   rootNote: string;
   scaleName: string;
   notes: Array<string>;
+  intervals: Array<string>;
 }
 
 export enum ActionType {
