@@ -57,7 +57,7 @@ const Keyboard: React.FC<{}> = ({}) => {
     if (scale.enabled) {
       if (scale.notes.includes(keyNames[0])) {
         // noop; include as sharp by default
-      } else if (scale.notes.includes(keyNames[0])) {
+      } else if (scale.notes.includes(keyNames[1])) {
         name = keyNames[1];
         included = true;
       } else {
@@ -79,6 +79,7 @@ const Keyboard: React.FC<{}> = ({}) => {
       <BlackKeys>
         {BLACK_KEYS.map(([midiNoteNumber, keyNames]: any, index) => {
           const sd = scaleData(keyNames);
+
           return (
             <Key
               key={`key-${midiNoteNumber}`}
