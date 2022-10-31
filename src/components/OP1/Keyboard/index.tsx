@@ -48,19 +48,14 @@ const Keyboard: React.FC<{}> = ({}) => {
   const scale = useScaleSelector();
   const { midiShift } = useCalibration();
 
-  const blackKeys = useMemo(() => {
-    return BLACK_KEYS.map((key) => {
-      key[0] += midiShift;
-      return key;
-    });
-  }, [midiShift]);
-
-  const whiteKeys = useMemo(() => {
-    return WHITE_KEYS.map((key) => {
-      key[0] += midiShift;
-      return key;
-    });
-  }, [midiShift]);
+  // Shift midi numbers to sync w/ OP-1's current octave transposition.
+  const [blackKeys, whiteKeys] = useMemo(
+    () => [
+      BLACK_KEYS.map(([number, name]) => [(number += midiShift), name]),
+      WHITE_KEYS.map(([number, name]) => [(number += midiShift), name]),
+    ],
+    [midiShift]
+  );
 
   return (
     <>

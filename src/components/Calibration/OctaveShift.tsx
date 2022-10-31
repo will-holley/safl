@@ -1,6 +1,6 @@
 /**
- * Calibrate with the OP-1's current octave shift in order to
- * correctly listen for key presses.
+ * Enables calibration with the OP-1's current octave transposition
+ * in order to correctly identify Midi numbers and key presses.
  */
 
 import useCalibration from "./useCalibration";
