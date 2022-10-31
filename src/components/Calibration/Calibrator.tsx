@@ -1,7 +1,9 @@
+import OctaveShift from "./OctaveShift";
+
 const Calibrator: React.FC<{}> = ({}) => {
   return (
     <>
-      <button>Calibrate</button>
+      <OctaveShift />
     </>
   );
 };

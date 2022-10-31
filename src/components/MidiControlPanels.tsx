@@ -1,10 +1,10 @@
 // Components
 import ScaleSelector from "@components/ScaleSelector";
 import ControlPanel from "@components/ControlPanel";
+import { Calibrator } from "./Calibration";
 
 // Libs
 import styled from "styled-components";
-import Calibrator from "./Calibrator";
 
 const Container = styled.div`
   display: grid;

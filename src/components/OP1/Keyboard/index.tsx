@@ -2,7 +2,10 @@ import styled from "styled-components";
 
 import { Key } from "./Key";
 
+// Hooks
 import { useScaleSelector } from "@components/ScaleSelector";
+import { useCalibration } from "@components/Calibration";
+import { useMemo } from "react";
 
 import { BLACK_KEYS, WHITE_KEYS } from "../../../constants/keyboard";
 
@@ -43,10 +46,26 @@ const WhiteKeys = styled.div`
 
 const Keyboard: React.FC<{}> = ({}) => {
   const scale = useScaleSelector();
+  const { midiShift } = useCalibration();
+
+  const blackKeys = useMemo(() => {
+    return BLACK_KEYS.map((key) => {
+      key[0] += midiShift;
+      return key;
+    });
+  }, [midiShift]);
+
+  const whiteKeys = useMemo(() => {
+    return WHITE_KEYS.map((key) => {
+      key[0] += midiShift;
+      return key;
+    });
+  }, [midiShift]);
+
   return (
     <>
       <BlackKeys>
-        {BLACK_KEYS.map(([midiNoteNumber, keyName]: any, index) => (
+        {blackKeys.map(([midiNoteNumber, keyName]: any, index) => (
           <Key
             key={`key-${midiNoteNumber}`}
             name={keyName}
@@ -60,7 +79,7 @@ const Keyboard: React.FC<{}> = ({}) => {
         ))}
       </BlackKeys>
       <WhiteKeys>
-        {WHITE_KEYS.map(([midiNoteNumber, keyName]: any) => (
+        {whiteKeys.map(([midiNoteNumber, keyName]: any) => (
           <Key
             key={`key-${midiNoteNumber}`}
             name={keyName}

@@ -9,6 +9,7 @@ const Container = styled.div`
 
   width: fit-content;
   max-width: 660px;
+  min-width: 600px;
   border: 1px solid var(--cp-monochrome-text);
 `;
 
