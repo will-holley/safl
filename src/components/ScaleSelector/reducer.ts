@@ -1,5 +1,5 @@
 // Libs
-import { Scale } from "@tonaljs/tonal";
+import { Scale, Note } from "@tonaljs/tonal";
 
 // Types
 import type { State, Action } from "./types";
@@ -10,7 +10,7 @@ import { SCALE_NAMES, NOTE_NAMES } from "@constants/theory";
 
 export function addScaleToState(state: State): State {
   const scale = Scale.get(`${state.tonic} ${state.scaleName}`);
-  state.notes = scale.notes;
+  state.notes = scale.notes.map(Note.simplify); // Remove double sharp/flat
   state.intervals = scale.intervals;
   return state;
 }
