@@ -46,6 +46,9 @@ const WhiteKeys = styled.div`
 const Keyboard: React.FC<{}> = ({}) => {
   const scale = useScaleSelector();
 
+  // TODO: Do something w/ Intervals & Chords & Color
+  console.log(scale);
+
   function scaleData(keyNames: Array<string>): {
     name: string;
     included: boolean;
