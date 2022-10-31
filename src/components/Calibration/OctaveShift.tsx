@@ -1,3 +1,8 @@
+/**
+ * Calibrate with the OP-1's current octave shift in order to
+ * correctly listen for key presses.
+ */
+
 import useCalibration from "./useCalibration";
 
 import { ActionType } from "./types";
