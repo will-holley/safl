@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import Button from "../hardware/Button";
 
-import { ScaleDegree } from "@T/theory";
+const DEBUG_SHOW_MIDI_NUMBERS = false;
 
 const Black = styled.div`
   background-color: var(--cp-monochrome-dark);
@@ -25,21 +25,12 @@ export const Key: React.FC<{
   scaleDegree: ScaleDegree | null;
   // Key alignment
   alignRight?: boolean;
-  enable?: boolean;
-}> = ({ name, scaleDegree, midiNoteNumber, alignRight = false, enable }) => {
+}> = ({ name, midiNoteNumber, alignRight = false }) => {
+  const label = DEBUG_SHOW_MIDI_NUMBERS ? midiNoteNumber.toString() : name;
   return (
     <>
-      <Button
-        alignRight={alignRight}
-        midiNumber={midiNoteNumber}
-        isKey
-        disabled={!enable}
-      >
-        {name.includes("#") || name.includes("b") ? (
-          <Black>{name}</Black>
-        ) : (
-          name
-        )}
+      <Button alignRight={alignRight} midiNumber={midiNoteNumber} isKey>
+        {name.includes("#") ? <Black>{label}</Black> : label}
       </Button>
     </>
   );
