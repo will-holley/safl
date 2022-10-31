@@ -6,6 +6,7 @@ import ScaleSelector, {
   ScaleSelectorProvider,
 } from "@components/ScaleSelector";
 import ControlPanel from "@components/ControlPanel";
+import MidiControlPanels from "@components/MidiControlPanels";
 
 const Home: NextPage = () => {
   return (
@@ -14,13 +15,7 @@ const Home: NextPage = () => {
         <ScaleSelectorProvider>
           <OP1 />
           <MidiContext.Consumer>
-            {({ enabled }) =>
-              enabled && (
-                <ControlPanel>
-                  <ScaleSelector />
-                </ControlPanel>
-              )
-            }
+            {({ enabled }) => enabled && <MidiControlPanels />}
           </MidiContext.Consumer>
         </ScaleSelectorProvider>
       </MidiProvider>
