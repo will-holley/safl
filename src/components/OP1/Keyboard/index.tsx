@@ -2,7 +2,10 @@ import styled from "styled-components";
 
 import { Key } from "./Key";
 
+// Hooks
 import { useScaleSelector } from "@components/ScaleSelector";
+import { useCalibration } from "@components/Calibration";
+import { useMemo } from "react";
 
 import { BLACK_KEYS, WHITE_KEYS } from "../../../constants/keyboard";
 
@@ -43,10 +46,21 @@ const WhiteKeys = styled.div`
 
 const Keyboard: React.FC<{}> = ({}) => {
   const scale = useScaleSelector();
+  const { midiShift } = useCalibration();
+
+  // Shift midi numbers to sync w/ OP-1's current octave transposition.
+  const [blackKeys, whiteKeys] = useMemo(
+    () => [
+      BLACK_KEYS.map(([number, name]) => [(number += midiShift), name]),
+      WHITE_KEYS.map(([number, name]) => [(number += midiShift), name]),
+    ],
+    [midiShift]
+  );
+
   return (
     <>
       <BlackKeys>
-        {BLACK_KEYS.map(([midiNoteNumber, keyName]: any, index) => (
+        {blackKeys.map(([midiNoteNumber, keyName]: any, index) => (
           <Key
             key={`key-${midiNoteNumber}`}
             name={keyName}
@@ -60,7 +74,7 @@ const Keyboard: React.FC<{}> = ({}) => {
         ))}
       </BlackKeys>
       <WhiteKeys>
-        {WHITE_KEYS.map(([midiNoteNumber, keyName]: any) => (
+        {whiteKeys.map(([midiNoteNumber, keyName]: any) => (
           <Key
             key={`key-${midiNoteNumber}`}
             name={keyName}

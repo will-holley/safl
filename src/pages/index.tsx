@@ -2,26 +2,21 @@ import type { NextPage } from "next";
 
 import MidiProvider, { Context as MidiContext } from "@components/OP1/midi";
 import OP1 from "@components/OP1/OP1";
-import ScaleSelector, {
-  ScaleSelectorProvider,
-} from "@components/ScaleSelector";
-import ControlPanel from "@components/ControlPanel";
+import { ScaleSelectorProvider } from "@components/ScaleSelector";
+import MidiControlPanels from "@components/MidiControlPanels";
+import { CalibrationProvider } from "@components/Calibration";
 
 const Home: NextPage = () => {
   return (
     <div>
       <MidiProvider>
         <ScaleSelectorProvider>
-          <OP1 />
-          <MidiContext.Consumer>
-            {({ enabled }) =>
-              enabled && (
-                <ControlPanel>
-                  <ScaleSelector />
-                </ControlPanel>
-              )
-            }
-          </MidiContext.Consumer>
+          <CalibrationProvider>
+            <OP1 />
+            <MidiContext.Consumer>
+              {({ enabled }) => enabled && <MidiControlPanels />}
+            </MidiContext.Consumer>
+          </CalibrationProvider>
         </ScaleSelectorProvider>
       </MidiProvider>
     </div>

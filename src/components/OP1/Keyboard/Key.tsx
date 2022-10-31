@@ -2,6 +2,8 @@ import styled from "styled-components";
 
 import Button from "../hardware/Button";
 
+const DEBUG_SHOW_MIDI_NUMBERS = false;
+
 const Black = styled.div`
   background-color: var(--cp-monochrome-dark);
   height: 100%;
@@ -23,10 +25,11 @@ export const Key: React.FC<{
   // Key alignment
   alignRight?: boolean;
 }> = ({ name, midiNoteNumber, alignRight = false }) => {
+  const label = DEBUG_SHOW_MIDI_NUMBERS ? midiNoteNumber.toString() : name;
   return (
     <>
       <Button alignRight={alignRight} midiNumber={midiNoteNumber} isKey>
-        {name.includes("#") ? <Black>{name}</Black> : name}
+        {name.includes("#") ? <Black>{label}</Black> : label}
       </Button>
     </>
   );
