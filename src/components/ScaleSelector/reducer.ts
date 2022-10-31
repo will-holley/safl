@@ -1,5 +1,5 @@
 // Libs
-import { Scale, Note } from "@tonaljs/tonal";
+import { Scale, Note, Key } from "@tonaljs/tonal";
 
 // Types
 import type { State, Action } from "./types";
@@ -9,9 +9,22 @@ import { ActionType } from "./types";
 import { SCALE_NAMES, NOTE_NAMES } from "@constants/theory";
 
 export function addScaleToState(state: State): State {
-  const scale = Scale.get(`${state.tonic} ${state.scaleName}`);
+  const name = `${state.tonic} ${state.scaleName}`;
+  const scale = Scale.get(name);
   state.notes = scale.notes.map(Note.simplify); // Remove double sharp/flat
   state.intervals = scale.intervals;
+  state.chords = [];
+
+  if (state.scaleName === "major") {
+    state.chords = [...Key.majorKey(state.tonic).chords];
+  } else if (state.scaleName === "aeolian") {
+    state.chords = [...Key.minorKey(state.tonic).natural.chords];
+  } else if (state.scaleName === "harmonic minor") {
+    state.chords = [...Key.minorKey(state.tonic).harmonic.chords];
+  } else if (state.scaleName === "melodic minor") {
+    state.chords = [...Key.minorKey(state.tonic).melodic.chords];
+  }
+
   return state;
 }
 

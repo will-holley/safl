@@ -6,6 +6,7 @@ export interface State {
   scaleName: string;
   notes: Array<string>;
   intervals: Array<string>;
+  chords: Array<string>;
 }
 
 export enum ActionType {
