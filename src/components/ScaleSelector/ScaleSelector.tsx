@@ -1,6 +1,3 @@
-// Libs
-import styled from "styled-components";
-
 // Components
 import {
   EncoderDepressionMapper,
@@ -16,20 +13,6 @@ import useScaleSelector from "./useScaleSelector";
 
 // Types
 import { ActionType } from "./types";
-
-const Container = styled.div`
-  width: 600px;
-`;
-
-const Layout = styled.div`
-  margin-top: 1rem;
-
-  display: grid;
-  grid-template-columns: repeat(3, 4fr);
-  grid-template-rows: repeat(3, 4fr);
-  column-gap: 0.5rem;
-  row-gap: 0.5rem;
-`;
 
 export const ScaleSelector: React.FC<{}> = ({}) => {
   const { enabled, rootNote, scaleName, dispatch } = useScaleSelector();
@@ -62,31 +45,28 @@ export const ScaleSelector: React.FC<{}> = ({}) => {
     });
 
   return (
-    <Container>
-      <strong>Scale</strong>
-      <Layout>
-        <label>Enabled</label>
-        <input
-          type="checkbox"
-          checked={enabled}
-          onChange={() => handleChangeEnabled()}
-        />
-        <EncoderDepressionMapper onDepression={() => handleChangeEnabled()} />
-        <label>Root</label>
-        <select value={rootNote} onChange={handleChangeRootNote}>
-          {NOTE_NAMES.map((name) => (
-            <option key={`note-${name}`}>{name}</option>
-          ))}
-        </select>
-        <EncoderRotationMapper onRotation={handleChangeRootNoteWithRotation} />
-        <label>Scale</label>
-        <select value={scaleName} onChange={handleChangeScale}>
-          {SCALE_NAMES.map((name) => (
-            <option key={`scale-${name}`}>{name}</option>
-          ))}
-        </select>
-        <EncoderRotationMapper onRotation={handleChangeScaleWithRotation} />
-      </Layout>
-    </Container>
+    <>
+      <label>Enabled</label>
+      <input
+        type="checkbox"
+        checked={enabled}
+        onChange={() => handleChangeEnabled()}
+      />
+      <EncoderDepressionMapper onDepression={() => handleChangeEnabled()} />
+      <label>Root</label>
+      <select value={rootNote} onChange={handleChangeRootNote}>
+        {NOTE_NAMES.map((name) => (
+          <option key={`note-${name}`}>{name}</option>
+        ))}
+      </select>
+      <EncoderRotationMapper onRotation={handleChangeRootNoteWithRotation} />
+      <label>Scale</label>
+      <select value={scaleName} onChange={handleChangeScale}>
+        {SCALE_NAMES.map((name) => (
+          <option key={`scale-${name}`}>{name}</option>
+        ))}
+      </select>
+      <EncoderRotationMapper onRotation={handleChangeScaleWithRotation} />
+    </>
   );
 };
