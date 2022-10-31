@@ -4,6 +4,7 @@ import ControlPanel from "@components/ControlPanel";
 
 // Libs
 import styled from "styled-components";
+import Calibrator from "./Calibrator";
 
 const Container = styled.div`
   display: grid;
@@ -13,8 +14,11 @@ const Container = styled.div`
 const MidiControlPanels: React.FC<{}> = ({}) => {
   return (
     <Container>
-      <ControlPanel>
+      <ControlPanel name="Scale">
         <ScaleSelector />
+      </ControlPanel>
+      <ControlPanel name="Calibrator">
+        <Calibrator />
       </ControlPanel>
     </Container>
   );
