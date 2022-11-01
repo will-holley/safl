@@ -15,14 +15,14 @@ import useScaleSelector from "./useScaleSelector";
 import { ActionType } from "./types";
 
 export const ScaleSelector: React.FC<{}> = ({}) => {
-  const { enabled, rootNote, scaleName, dispatch } = useScaleSelector();
+  const { enabled, tonic, scaleName, dispatch } = useScaleSelector();
 
   const handleChangeEnabled = () =>
     dispatch({ type: ActionType.SwitchEnabled });
 
-  const handleChangeRootNote = (event: React.ChangeEvent<HTMLSelectElement>) =>
+  const handleChangeTonic = (event: React.ChangeEvent<HTMLSelectElement>) =>
     dispatch({
-      type: ActionType.SetRootNote,
+      type: ActionType.SetTonic,
       value: event.target.value,
     });
 
@@ -38,35 +38,41 @@ export const ScaleSelector: React.FC<{}> = ({}) => {
       direction,
     });
 
-  const handleChangeRootNoteWithRotation = (direction: RotationDirection) =>
+  const handleChangeTonicWithRotation = (direction: RotationDirection) =>
     dispatch({
-      type: ActionType.CycleRootNote,
+      type: ActionType.CycleTonic,
       direction,
     });
 
   return (
     <>
-      <label>Enabled</label>
-      <input
-        type="checkbox"
-        checked={enabled}
-        onChange={() => handleChangeEnabled()}
-      />
-      <EncoderDepressionMapper onDepression={() => handleChangeEnabled()} />
-      <label>Root</label>
-      <select value={rootNote} onChange={handleChangeRootNote}>
-        {NOTE_NAMES.map((name) => (
-          <option key={`note-${name}`}>{name}</option>
-        ))}
-      </select>
-      <EncoderRotationMapper onRotation={handleChangeRootNoteWithRotation} />
-      <label>Scale</label>
-      <select value={scaleName} onChange={handleChangeScale}>
-        {SCALE_NAMES.map((name) => (
-          <option key={`scale-${name}`}>{name}</option>
-        ))}
-      </select>
-      <EncoderRotationMapper onRotation={handleChangeScaleWithRotation} />
+      <>
+        <label>Enabled</label>
+        <input
+          type="checkbox"
+          checked={enabled}
+          onChange={() => handleChangeEnabled()}
+        />
+        <EncoderDepressionMapper onDepression={() => handleChangeEnabled()} />
+      </>
+      <>
+        <label>Tonic</label>
+        <select value={tonic} onChange={handleChangeTonic}>
+          {NOTE_NAMES.map((name) => (
+            <option key={`note-${name}`}>{name}</option>
+          ))}
+        </select>
+        <EncoderRotationMapper onRotation={handleChangeTonicWithRotation} />
+      </>
+      <>
+        <label>Scale</label>
+        <select value={scaleName} onChange={handleChangeScale}>
+          {SCALE_NAMES.map((name) => (
+            <option key={`scale-${name}`}>{name}</option>
+          ))}
+        </select>
+        <EncoderRotationMapper onRotation={handleChangeScaleWithRotation} />
+      </>
     </>
   );
 };
