@@ -23,6 +23,9 @@ import { CallbackType, RotationDirection } from "./types";
 // Reducer
 import { initialState, reducer, ActionType } from "./reducer";
 
+// Constants
+import { DEVICE_IDS } from "@constants/device";
+
 const MidiProvider: React.FC<{
   children: React.ReactElement | Array<React.ReactElement>;
 }> = ({ children }) => {
@@ -150,7 +153,8 @@ const MidiProvider: React.FC<{
       await driver.current.enable();
 
       // Verify that OP1 is connected
-      const _input = driver.current.getInputByName("OP-1 Midi Device");
+      const inputs = driver.current.inputs;
+      const _input = inputs.find((input) => DEVICE_IDS.includes(input.name));
 
       if (!_input) throw new Error("No OP-1 Midi connection");
       setInput(_input);

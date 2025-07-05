@@ -2,6 +2,8 @@ import styled from "styled-components";
 
 import Button from "../hardware/Button";
 
+import { ScaleDegree } from "@T/theory";
+
 const DEBUG_SHOW_MIDI_NUMBERS = false;
 
 const Black = styled.div`
@@ -22,13 +24,20 @@ export const Key: React.FC<{
   name: string;
   // See: https://www.inspiredacoustics.com/en/MIDI_note_numbers_and_center_frequencies
   midiNoteNumber: number;
+  scaleDegree: ScaleDegree | null;
   // Key alignment
   alignRight?: boolean;
-}> = ({ name, midiNoteNumber, alignRight = false }) => {
+  enable?: boolean;
+}> = ({ name, midiNoteNumber, alignRight = false, enable }) => {
   const label = DEBUG_SHOW_MIDI_NUMBERS ? midiNoteNumber.toString() : name;
   return (
     <>
-      <Button alignRight={alignRight} midiNumber={midiNoteNumber} isKey>
+      <Button
+        alignRight={alignRight}
+        midiNumber={midiNoteNumber}
+        isKey
+        disabled={!enable}
+      >
         {name.includes("#") ? <Black>{label}</Black> : label}
       </Button>
     </>
